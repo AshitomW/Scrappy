@@ -1,40 +1,11 @@
 "use client";
-import {
-  DollarSign,
-  HomeIcon,
-  Layers2Icon,
-  LucideCircleDollarSign,
-  ShieldIcon,
-} from "lucide-react";
 import React from "react";
 import Logo from "./Logo";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-
-const routes = [
-  {
-    href: "",
-    label: "Home",
-    icon: HomeIcon,
-  },
-  {
-    href: "workflows",
-    label: "Workflows",
-    icon: Layers2Icon,
-  },
-  {
-    href: "keys",
-    label: "Keys",
-    icon: ShieldIcon,
-  },
-  {
-    href: "billing",
-    label: "Billing",
-    icon: LucideCircleDollarSign,
-  },
-];
+import { routes } from "@/consants/constant";
 
 export default function DesktopSidebar() {
   const pathname = usePathname();

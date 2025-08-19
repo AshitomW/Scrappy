@@ -11,7 +11,12 @@ export default function Logo({
   iconSize = 20,
 }: LogoProps) {
   return (
-    <div className={cn("text-3xl font-extrabold font-inter", fontSize)}>
+    <div
+      className={cn(
+        "mt-2 flex items-center justify-center text-3xl font-extrabold font-inter",
+        fontSize
+      )}
+    >
       <span className="bg-gradient-to-r from-cyan-600 to-cyan-500 bg-clip-text text-transparent">
         Scrappy
       </span>
