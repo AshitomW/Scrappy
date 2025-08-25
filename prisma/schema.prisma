@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Workflow{
+  id String @id @default(cuid())
+  userID String 
+  name String
+  description String?
+
+  definition String
+  status String
+  createdAT DateTime @default(now())
+  updatedAT DateTime @updatedAt
+
+
+  // prevent user from creating workflows with same name
+  @@unique([name,userID])
+
+}
