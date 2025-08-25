@@ -19,7 +19,7 @@ export default function MobileSideBar() {
     ) || routes[0];
   return (
     <div className="block border-separate bg-background md:hidden">
-      <nav className="container flex items-center justify-center px-8">
+      <nav className="container flex items-center justify-center">
         <Sheet open={isOpen} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button variant={"ghost"} size="icon">
@@ -27,7 +27,7 @@ export default function MobileSideBar() {
             </Button>
           </SheetTrigger>
           <SheetContent
-            className="w-[400px] sm:w-[540px] space-y-2"
+            className="w-[400px] sm:w-[540px] space-y-2 px-4 py-1"
             side="left"
           >
             <Logo />
@@ -45,7 +45,7 @@ export default function MobileSideBar() {
                             ? "sidebarActiveItem"
                             : "sidebarItem",
                       }),
-                      "mb-2 mx-4" // add spacing between links
+                      "mb-2" // add spacing between links
                     )}
                   >
                     <route.icon size={20} />

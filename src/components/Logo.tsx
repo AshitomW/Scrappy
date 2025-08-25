@@ -13,7 +13,7 @@ export default function Logo({
   return (
     <div
       className={cn(
-        "mt-2 flex items-center justify-center text-3xl font-extrabold font-inter",
+        "flex items-center justify-center text-3xl font-extrabold font-inter",
         fontSize
       )}
     >

@@ -1,5 +1,5 @@
 "use client";
-
+import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
