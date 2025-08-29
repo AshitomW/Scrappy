@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,23 +30,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      afterSignOutUrl={"/sign-in"}
-      appearance={{
-        cssLayerName: "clerk",
-        elements: {
-          formButtonPrimary:
-            "bg-primary hover:bg-primar/90 text-sm !shadow-none",
-        },
-      }}
-    >
-      <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
+      <ClerkProvider
+        afterSignOutUrl={"/sign-in"}
+        appearance={{
+          cssLayerName: "clerk",
+          elements: {
+            formButtonPrimary:
+              "bg-primary hover:bg-primar/90 text-sm !shadow-none",
+          },
+        }}
+      >
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
         >
           <AppProviders>{children}</AppProviders>
+          <Toaster richColors />
         </body>
-      </html>
-    </ClerkProvider>
+      </ClerkProvider>
+    </html>
   );
 }
