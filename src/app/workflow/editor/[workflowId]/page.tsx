@@ -6,9 +6,9 @@ import Editor from "../../_components/Editor";
 export default async function page({
   params,
 }: {
-  params: { workflowId: string };
+  params: Promise<{ workflowId: string }>;
 }) {
-  const workflowId = params.workflowId;
+  const workflowId = (await params).workflowId;
   const { userId } = await auth();
   if (!userId) return <div>Unauthenticated</div>;
 
