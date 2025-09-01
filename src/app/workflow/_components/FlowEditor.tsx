@@ -45,8 +45,12 @@ export default function FlowEditor({ workflow }: Props) {
         snapToGrid
         fitView
       >
-        <Controls position="top-left" fitViewOptions={fitViewOptions} />
-        <Background variant={BackgroundVariant.Lines} gap={12} size={1} />
+        <Controls
+          position="top-left"
+          fitViewOptions={fitViewOptions}
+          className="dark:text-black"
+        />
+        <Background variant={BackgroundVariant.Dots} gap={40} size={2} />
       </ReactFlow>
     </main>
   );
