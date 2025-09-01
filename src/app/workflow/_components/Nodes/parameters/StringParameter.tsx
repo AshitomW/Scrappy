@@ -12,7 +12,7 @@ export default function StringParameter({
   updateNodeParameterValue,
 }: ParameterProps) {
   const id = useId(); // generate random id
-  const [internalValue, setInternalValue] = useState(value);
+  const [internalValue, setInternalValue] = useState(value ?? "");
 
   return (
     <div className="space-y-1 p-2 w-full">
