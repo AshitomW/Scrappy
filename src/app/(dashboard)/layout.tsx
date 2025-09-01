@@ -13,7 +13,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <header className="flex items-center justify-between px-6 py-4 h-[50px] container">
           <BreadCrumbHeader />
           <div className="gap-4 flex items-center">
-            <ModeToggle />
+            {/* <ModeToggle /> */}
             <SignedIn>
               <UserButton />
             </SignedIn>

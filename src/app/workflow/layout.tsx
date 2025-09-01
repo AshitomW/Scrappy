@@ -10,7 +10,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <Separator />
       <footer className="flex items-center justify-between p-2">
         <Logo iconSize={16} fontSize="text-xl" />
-        <ModeToggle />
+        {/* <ModeToggle /> */}
       </footer>
     </div>
   );
