@@ -16,4 +16,14 @@ export const PageToHtmlTask = {
       required: true,
     },
   ],
+  outputs: [
+    {
+      name: "Html",
+      type: TaskParameterType.String,
+    },
+    {
+      name: "Web page",
+      type: TaskParameterType.Browser_Instance,
+    },
+  ],
 };
