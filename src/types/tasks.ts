@@ -1,9 +1,11 @@
 export enum TaskType {
   LAUNCH_BROWSER = "LAUNCH_BROWSER",
+  PAGE_TO_HTML = "PAGE_TO_HTML",
 }
 
 export enum TaskParameterType {
   String = "string",
+  Browser_Instance = "Browser Instance",
 }
 
 export interface TaskParameter {

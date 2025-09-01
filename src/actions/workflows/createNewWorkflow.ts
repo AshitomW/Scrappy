@@ -46,5 +46,3 @@ export async function CreateNewWorkflow(form: createWorkflowSchemaType) {
   revalidatePath("/workflows");
   return { status: true, workflowId: result.id };
 }
-
-/// 3:00
