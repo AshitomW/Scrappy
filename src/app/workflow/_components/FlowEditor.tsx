@@ -14,8 +14,9 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import NodeComponent from "./Nodes/NodeComponent";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { toast, useSonner } from "sonner";
+import { FlowNode } from "@/types/appnode";
 
 interface Props {
   workflow: Workflows;
@@ -31,9 +32,9 @@ const nodeTypes = {
 };
 
 export default function FlowEditor({ workflow }: Props) {
-  const [nodes, setNodes, onNodeChange] = useNodesState([]);
+  const [nodes, setNodes, onNodeChange] = useNodesState<FlowNode>([]);
   const [edges, setEdges, onEdgeChange] = useEdgesState([]);
-  const { setViewport } = useReactFlow();
+  const { setViewport, screenToFlowPosition } = useReactFlow();
   useEffect(
     function () {
       try {
@@ -54,6 +55,25 @@ export default function FlowEditor({ workflow }: Props) {
     [workflow.definition, setEdges, setNodes, setViewport]
   );
 
+  const onDragOver = useCallback(function (e: React.DragEvent) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const onDrop = useCallback(function (e: React.DragEvent) {
+    e.preventDefault();
+    const taskType = e.dataTransfer.getData("application/reactflow");
+    if (typeof taskType === undefined || !taskType) return;
+
+    const dropPosition = screenToFlowPosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+
+    const newNode = CreateFlowNode(taskType as TaskType, dropPosition);
+    setNodes((nodes) => nodes.concat(newNode));
+  }, []);
+
   return (
     <main className="h-full w-full">
       <ReactFlow
@@ -64,6 +84,8 @@ export default function FlowEditor({ workflow }: Props) {
         nodeTypes={nodeTypes}
         snapGrid={flowGrid}
         fitViewOptions={fitViewOptions}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
         snapToGrid
         fitView
       >
