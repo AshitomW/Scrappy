@@ -10,9 +10,12 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import NodeComponent from "./Nodes/NodeComponent";
+import { useEffect } from "react";
+import { toast, useSonner } from "sonner";
 
 interface Props {
   workflow: Workflows;
@@ -28,10 +31,29 @@ const nodeTypes = {
 };
 
 export default function FlowEditor({ workflow }: Props) {
-  const [nodes, setNodes, onNodeChange] = useNodesState([
-    CreateFlowNode(TaskType.LAUNCH_BROWSER),
-  ]);
+  const [nodes, setNodes, onNodeChange] = useNodesState([]);
   const [edges, setEdges, onEdgeChange] = useEdgesState([]);
+  const { setViewport } = useReactFlow();
+  useEffect(
+    function () {
+      try {
+        const flow = JSON.parse(workflow.definition);
+        if (!flow) return;
+        setNodes(flow.nodes || []);
+        setEdges(flow.edges || []);
+
+        // -------- Set last used viewport , remove fitview from ReactFlow component to use this!!
+        // if (!flow.viewport) return;
+
+        // const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        // setViewport({ x, y, zoom });
+      } catch (err) {
+        toast.error("Something went wrong", { id: "workflow" });
+      }
+    },
+    [workflow.definition, setEdges, setNodes, setViewport]
+  );
+
   return (
     <main className="h-full w-full">
       <ReactFlow
