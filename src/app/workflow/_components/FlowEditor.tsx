@@ -20,6 +20,7 @@ import NodeComponent from "./Nodes/NodeComponent";
 import { useCallback, useEffect } from "react";
 import { toast, useSonner } from "sonner";
 import { FlowNode } from "@/types/appnode";
+import DeletableEdge from "./Edges/DeletableEdge";
 
 interface Props {
   workflow: Workflows;
@@ -32,6 +33,9 @@ const fitViewOptions = {
 
 const nodeTypes = {
   FlowNode: NodeComponent,
+};
+const edgeTypes = {
+  default: DeletableEdge,
 };
 
 export default function FlowEditor({ workflow }: Props) {
@@ -89,6 +93,7 @@ export default function FlowEditor({ workflow }: Props) {
         onEdgesChange={onEdgeChange}
         onNodesChange={onNodeChange}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         snapGrid={flowGrid}
         fitViewOptions={fitViewOptions}
         onDragOver={onDragOver}
