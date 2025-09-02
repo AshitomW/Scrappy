@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ParameterProps } from "@/types/appnode";
 
-import React, { useId, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 
 export default function StringParameter({
   parameter,
@@ -12,7 +12,14 @@ export default function StringParameter({
   updateNodeParameterValue,
 }: ParameterProps) {
   const id = useId(); // generate random id
-  const [internalValue, setInternalValue] = useState(value ?? "");
+  const [internalValue, setInternalValue] = useState(value || "");
+
+  useEffect(
+    function () {
+      setInternalValue(value || "");
+    },
+    [value]
+  );
 
   return (
     <div className="space-y-1 p-2 w-full">

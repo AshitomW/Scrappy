@@ -21,6 +21,7 @@ import { useCallback, useEffect } from "react";
 import { toast, useSonner } from "sonner";
 import { FlowNode } from "@/types/appnode";
 import DeletableEdge from "./Edges/DeletableEdge";
+import { Target } from "lucide-react";
 
 interface Props {
   workflow: Workflows;
@@ -41,7 +42,7 @@ const edgeTypes = {
 export default function FlowEditor({ workflow }: Props) {
   const [nodes, setNodes, onNodeChange] = useNodesState<FlowNode>([]);
   const [edges, setEdges, onEdgeChange] = useEdgesState<Edge>([]);
-  const { setViewport, screenToFlowPosition } = useReactFlow();
+  const { setViewport, screenToFlowPosition, updateNodeData } = useReactFlow();
   useEffect(
     function () {
       try {
@@ -81,9 +82,22 @@ export default function FlowEditor({ workflow }: Props) {
     setNodes((nodes) => nodes.concat(newNode));
   }, []);
 
-  const onConnect = useCallback((connection: Connection) => {
-    setEdges((edges) => addEdge({ ...connection, animated: true }, edges));
-  }, []);
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      setEdges((edges) => addEdge({ ...connection, animated: true }, edges));
+      if (!connection.targetHandle) return;
+      const node = nodes.find((nd) => nd.id === connection.target);
+      if (!node) return;
+      const nodeInputs = node?.data.inputs;
+      updateNodeData(node.id, {
+        inputs: {
+          ...nodeInputs,
+          [connection.targetHandle]: "",
+        },
+      });
+    },
+    [setEdges, updateNodeData, nodes]
+  );
 
   return (
     <main className="h-full w-full">
