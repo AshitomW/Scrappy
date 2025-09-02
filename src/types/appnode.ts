@@ -13,5 +13,6 @@ export interface FlowNode extends Node {
 export interface ParameterProps {
   parameter: TaskParameter;
   value?: string;
+  disabled?: boolean;
   updateNodeParameterValue: (newValue: string) => void;
 }

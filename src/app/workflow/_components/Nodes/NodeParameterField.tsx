@@ -10,9 +10,11 @@ import BrowserInstanceParameter from "./parameters/BrowserInstanceParameter";
 export default function NodeParameterField({
   parameter,
   nodeId,
+  disabled,
 }: {
   parameter: TaskParameter;
   nodeId: string;
+  disabled: boolean;
 }) {
   const { updateNodeData, getNode } = useReactFlow();
   const node = getNode(nodeId) as FlowNode;
@@ -37,6 +39,7 @@ export default function NodeParameterField({
           parameter={parameter}
           value={value}
           updateNodeParameterValue={updateNodeParameterValue}
+          disabled={disabled}
         />
       );
     case TaskParameterType.Browser_Instance:
