@@ -5,6 +5,7 @@ import StringParameter from "./parameters/StringParameter";
 import { useReactFlow } from "@xyflow/react";
 import { FlowNode } from "@/types/appnode";
 import { useCallback } from "react";
+import BrowserInstanceParameter from "./parameters/BrowserInstanceParameter";
 
 export default function NodeParameterField({
   parameter,
@@ -35,6 +36,13 @@ export default function NodeParameterField({
         <StringParameter
           parameter={parameter}
           value={value}
+          updateNodeParameterValue={updateNodeParameterValue}
+        />
+      );
+    case TaskParameterType.Browser_Instance:
+      return (
+        <BrowserInstanceParameter
+          parameter={parameter}
           updateNodeParameterValue={updateNodeParameterValue}
         />
       );

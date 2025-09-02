@@ -22,7 +22,7 @@ const NodeComponent = memo((props: NodeProps) => {
 
       <NodeOutputs>
         {task.outputs.map((output, index) => {
-          return <NodeOutput key={index} output={output} nodeId={nodeId} />;
+          return <NodeOutput key={index} output={output} />;
         })}
       </NodeOutputs>
     </NodeCard>
