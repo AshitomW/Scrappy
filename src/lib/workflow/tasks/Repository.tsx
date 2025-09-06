@@ -5,7 +5,7 @@ import { PageToHtmlTask } from "./page_to_html";
 import { WorkflowTask } from "@/types/workflow";
 
 type Repository = {
-  [K in TaskType]: WorkflowTask;
+  [K in TaskType]: WorkflowTask & { type: K };
 };
 
 export const TaskRepository: Repository = {

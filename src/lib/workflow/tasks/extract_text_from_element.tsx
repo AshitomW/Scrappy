@@ -1,4 +1,5 @@
 import { TaskParameterType, TaskType } from "@/types/tasks";
+import { WorkflowTask } from "@/types/workflow";
 import { CodeIcon, GlobeIcon, LucideProps, TextIcon } from "lucide-react";
 
 export const ExtractTextFromElement = {
@@ -29,4 +30,4 @@ export const ExtractTextFromElement = {
     },
   ],
   credits: 2,
-};
+} satisfies WorkflowTask;

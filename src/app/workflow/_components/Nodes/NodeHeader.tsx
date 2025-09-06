@@ -36,7 +36,8 @@ export default function NodeHeader({
         <div className="flex gap-1 items-center">
           {task.isEntryPoint && <Badge>Entry Point</Badge>}
           <Badge className="gap-2 flex items-center text-xs">
-            <CoinsIcon size={16} />5 {/* TODO */}
+            <CoinsIcon size={16} />
+            {task.credits}
           </Badge>
           {!task.isEntryPoint && (
             <>
