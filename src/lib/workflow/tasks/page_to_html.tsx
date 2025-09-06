@@ -26,4 +26,5 @@ export const PageToHtmlTask = {
       type: TaskParameterType.Browser_Instance,
     },
   ],
+  credits: 2,
 };

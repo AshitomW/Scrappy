@@ -28,4 +28,5 @@ export const ExtractTextFromElement = {
       type: TaskParameterType.String,
     },
   ],
+  credits: 2,
 };
