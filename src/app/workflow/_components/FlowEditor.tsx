@@ -10,6 +10,7 @@ import {
   Connection,
   Controls,
   Edge,
+  getOutgoers,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -22,6 +23,7 @@ import { toast, useSonner } from "sonner";
 import { FlowNode } from "@/types/appnode";
 import DeletableEdge from "./Edges/DeletableEdge";
 import { Target } from "lucide-react";
+import { TaskRepository } from "@/lib/workflow/tasks/Repository";
 
 interface Props {
   workflow: Workflows;
@@ -99,6 +101,55 @@ export default function FlowEditor({ workflow }: Props) {
     [setEdges, updateNodeData, nodes]
   );
 
+  const isValidConnection = useCallback(
+    function (connection: Edge | Connection) {
+      // Disable Self Connections
+      if (connection.source === connection.target) return false;
+
+      // Same task parameter type
+
+      const source = nodes.find((node) => node.id === connection.source);
+      const target = nodes.find((node) => node.id === connection.target);
+
+      if (!source || !target) {
+        console.error("Invalid Connection: Source or Target Node Not Found");
+        return false;
+      }
+
+      const sourceTask = TaskRepository[source.data.type];
+      const targetTask = TaskRepository[target.data.type];
+
+      const output = sourceTask.outputs.find(
+        (o) => o.name === connection.sourceHandle
+      );
+
+      const input = targetTask.inputs.find(
+        (i) => i.name == connection.targetHandle
+      );
+
+      if (input?.type !== output?.type) {
+        console.error("Invalid Connection");
+        return false;
+      }
+
+      // Preventing Node Cyles
+
+      const hasCycle = (node: FlowNode, visited = new Set()) => {
+        if (visited.has(node.id)) return false;
+        visited.add(node.id);
+
+        for (const outgoer of getOutgoers(node, nodes, edges)) {
+          if (outgoer.id === connection.source) return true;
+          if (hasCycle(outgoer, visited)) return true;
+        }
+      };
+
+      const detectedCycle = hasCycle(target);
+      return !detectedCycle;
+    },
+    [nodes, edges]
+  );
+
   return (
     <main className="h-full w-full">
       <ReactFlow
@@ -113,6 +164,7 @@ export default function FlowEditor({ workflow }: Props) {
         onDragOver={onDragOver}
         onDrop={onDrop}
         onConnect={onConnect}
+        isValidConnection={isValidConnection}
         snapToGrid
         fitView
       >
