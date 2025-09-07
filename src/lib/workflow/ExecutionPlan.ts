@@ -5,6 +5,7 @@ import {
 } from "@/types/workflow";
 import { Edge, getIncomers } from "@xyflow/react";
 import { TaskRepository } from "./tasks/Repository";
+import next from "next";
 
 type FlowToExecutionPlanType = {
   executionPlan?: WorkflowExecutionPlan;
@@ -33,9 +34,11 @@ export function FlowToExecutionPlan(
 
   // Execution Plan Generation
   const planned = new Set<string>();
+  planned.add(entryPoint.id);
+
   for (
     let phase = 2;
-    phase <= nodes.length || planned.size < nodes.length;
+    phase <= nodes.length && planned.size < nodes.length;
     phase++
   ) {
     const nextPhase: WorkflowExecutionPlanPhase = { phase, nodes: [] };
@@ -57,8 +60,11 @@ export function FlowToExecutionPlan(
       }
 
       nextPhase.nodes.push(node);
+    }
+    for (const node of nextPhase.nodes) {
       planned.add(node.id);
     }
+    executionPlan.push(nextPhase);
   }
 
   return { executionPlan };
