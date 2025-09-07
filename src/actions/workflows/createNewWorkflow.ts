@@ -31,7 +31,7 @@ export async function CreateNewWorkflow(form: createWorkflowSchemaType) {
 
   initialFlow.nodes.push(CreateFlowNode(TaskType.LAUNCH_BROWSER));
 
-  const result = await prisma.workflows.create({
+  const result = await prisma.workflow.create({
     data: {
       userId,
       status: WorkflowStatus.DRAFT,

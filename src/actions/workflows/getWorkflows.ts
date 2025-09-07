@@ -9,7 +9,7 @@ export async function getWorkFlowsForUser() {
     throw new Error("401: Unauthenticated");
   }
 
-  const workflows = prisma.workflows.findMany({
+  const workflows = prisma.workflow.findMany({
     where: {
       userId,
     },

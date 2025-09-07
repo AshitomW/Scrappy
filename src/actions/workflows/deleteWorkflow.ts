@@ -10,7 +10,7 @@ export async function DeleteWorkflow(id: string) {
     throw new Error("401 Unauthenticated");
   }
 
-  await prisma.workflows.delete({
+  await prisma.workflow.delete({
     where: {
       id,
       userId,

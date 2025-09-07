@@ -12,7 +12,7 @@ export default async function page({
   const { userId } = await auth();
   if (!userId) return <div>Unauthenticated</div>;
 
-  const workflow = await prisma.workflows.findUnique({
+  const workflow = await prisma.workflow.findUnique({
     where: {
       id: workflowId,
       userId,

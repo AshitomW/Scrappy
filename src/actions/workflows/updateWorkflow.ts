@@ -17,7 +17,7 @@ export async function UpdateWorkflow({
     throw new Error("Unauthenticated");
   }
 
-  const workflow = await prisma.workflows.findUnique({
+  const workflow = await prisma.workflow.findUnique({
     where: {
       id,
       userId,
@@ -29,7 +29,7 @@ export async function UpdateWorkflow({
   if (workflow.status !== WorkflowStatus.DRAFT)
     throw new Error("Workflow is not a draft");
 
-  await prisma.workflows.update({
+  await prisma.workflow.update({
     data: {
       definition,
     },

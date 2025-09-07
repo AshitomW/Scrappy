@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Workflows{
+model Workflow{
   id String @id @default(cuid())
   userId String 
   name String
@@ -25,6 +25,22 @@ model Workflows{
   // prevent user from creating workflows with same name
   @@unique([name,userId])
 
+
+
 }
+
+
+
+
+// ---- WorkflowExecution
+/* Contains general information about the entire execution status, credit consumed etc.*/
+
+
+
+
+// ----- Execution phase
+
+/*Store all the individual tast executed during a workflow execution*/
+
 
 

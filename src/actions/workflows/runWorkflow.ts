@@ -17,7 +17,7 @@ export async function RunWorkflow(form: {
 
   if (!workflowId) throw new Error("WorkflowId is required");
 
-  const workflow = await prisma.workflows.findUnique({
+  const workflow = await prisma.workflow.findUnique({
     where: {
       userId,
       id: workflowId,
