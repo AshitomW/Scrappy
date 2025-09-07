@@ -25,7 +25,7 @@ model Workflow{
   // prevent user from creating workflows with same name
   @@unique([name,userId])
 
-
+  executions WorkflowExecution[]
 
 }
 
@@ -36,6 +36,22 @@ model Workflow{
 /* Contains general information about the entire execution status, credit consumed etc.*/
 
 
+model WorkflowExecution{
+  id String @id @default(cuid())
+  workflowId String
+  userId String
+  trigger String
+  status String
+  createdAt DateTime @default(now())
+  startedAt DateTime?
+  completedAt DateTime?
+  workflow Workflow @relation(fields: [workflowId],references: [id],onDelete: Cascade)
+
+
+  phases ExecutionPhase[]
+}
+
+
 
 
 // ----- Execution phase
@@ -44,3 +60,21 @@ model Workflow{
 
 
 
+model ExecutionPhase{
+  id String @id @default(cuid())
+  userId String
+  status String
+  number Int
+  node String
+  name String
+  startedAt DateTime?
+  completedAt DateTime?
+  inputs String?
+  outputs String?
+  creditsCost Int?
+
+  workflowExecutionId String
+  execution WorkflowExecution @relation(fields: [workflowExecutionId],references: [id], onDelete: Cascade)
+
+
+}
