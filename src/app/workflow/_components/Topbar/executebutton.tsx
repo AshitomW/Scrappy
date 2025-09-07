@@ -25,6 +25,7 @@ export default function ExecuteButton({ workflowId }: { workflowId: string }) {
     <Button
       variant={"outline"}
       className="flex items-center gap-2"
+      disabled={mutation.isPending}
       onClick={() => {
         const plan = generate();
         if (!plan) return;
