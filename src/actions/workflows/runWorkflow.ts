@@ -11,6 +11,10 @@ import {
 } from "@/types/workflow";
 import { auth } from "@clerk/nextjs/server";
 
+import { redirect } from "next/navigation";
+import { truncateByDomain } from "recharts/types/util/ChartUtils";
+import { success } from "zod";
+
 export async function RunWorkflow(form: {
   workflowId: string;
   flowDefinition?: string; // because of draft mode
@@ -79,4 +83,9 @@ export async function RunWorkflow(form: {
   if (!execution) {
     throw new Error("workflow execution not created");
   }
+
+  return {
+    success: true,
+    redirectTo: `/workflow/runs/${workflowId}/${execution.id}`,
+  };
 }
