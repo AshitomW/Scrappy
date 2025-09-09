@@ -84,6 +84,8 @@ export async function RunWorkflow(form: {
     throw new Error("workflow execution not created");
   }
 
+  ExecuteWorkflow(execution.id); // will be run on background
+
   return {
     success: true,
     redirectTo: `/workflow/runs/${workflowId}/${execution.id}`,

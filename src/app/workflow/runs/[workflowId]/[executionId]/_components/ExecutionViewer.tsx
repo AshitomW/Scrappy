@@ -16,9 +16,10 @@ import {
   LucideIcon,
   WorkflowIcon,
 } from "lucide-react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import { DateToDurationString } from "@/lib/helpers/date";
 import { GetPhasesTotalCost } from "@/lib/helpers/phases";
+import { GetWorkflowPhaseDetails } from "@/actions/workflows/GetWorkflowPhaseDetails";
 
 type ExecutionData = Awaited<ReturnType<typeof GetWorkflowExecutionWithPhases>>;
 
@@ -27,6 +28,8 @@ export default function ExecutionViewer({
 }: {
   initialData: ExecutionData;
 }) {
+  const [selectedPhase, setSelectedPhase] = useState<string | null>(null);
+
   const query = useQuery({
     queryKey: ["execution", initialData?.id],
     initialData,
@@ -42,6 +45,13 @@ export default function ExecutionViewer({
 
   const creditsConsumed = GetPhasesTotalCost(query.data?.phases || []);
 
+  const phaseDetails = useQuery({
+    queryKey: ["phaseDetails", selectedPhase],
+    enabled: selectedPhase !== null,
+    queryFn: () => GetWorkflowPhaseDetails(selectedPhase!),
+  });
+
+  const isRunning = query.data?.status === ExecutionStatus.Running;
   return (
     <div className="flex w-full h-full ">
       <aside className="w-[400px] min-w-[400px] max-w-[400px] border-r-2 border-separate flex flex-grow flex-col overflow-hidden">
@@ -93,17 +103,25 @@ export default function ExecutionViewer({
               <Button
                 key={phase.id}
                 className="w-full justify-between "
-                variant={"ghost"}
+                variant={selectedPhase === phase.id ? "secondary" : "ghost"}
+                onClick={() => {
+                  if (isRunning) return;
+                  setSelectedPhase(phase.id);
+                }}
               >
                 <div className="flex items-center gap-2">
                   <Badge variant={"outline"}>{index + 1}</Badge>
                   <p className="font-semibold">{phase.name}</p>
                 </div>
+                <p className="text-xs text-muted-foreground">{phase.status}</p>
               </Button>
             );
           })}
         </div>
       </aside>
+      <div className="flex w-full h-full">
+        <pre>{JSON.stringify(phaseDetails.data, null, 4)}</pre>
+      </div>
     </div>
   );
 }
