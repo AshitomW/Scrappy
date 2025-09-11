@@ -8,6 +8,7 @@ import { ExecutionPhase } from "@prisma/client";
 import { FlowNode } from "@/types/appnode";
 import { TaskRepository } from "./tasks/Repository";
 import { ExecutorRepository } from "./Executor/Repository";
+import { Environment, ExecutionEnvironment } from "@/types/Executor";
 
 export async function ExecuteWorkflow(executionId: string) {
   const execution = await prisma.workflowExecution.findUnique({
@@ -19,13 +20,13 @@ export async function ExecuteWorkflow(executionId: string) {
     throw new Error("Execution not found");
   }
 
-  const environment = { phases: {} };
+  const environment: Environment = { phases: {} };
   await InitializeWorkflowExecution(executionId, execution.workflowId);
   await InitializePhaseStatuses(execution);
   let creditsConsumed = 0;
   let executionFailed = false;
   for (const phase of execution.phases) {
-    const phaseExecution = await ExecuteWorkflowPhase(phase);
+    const phaseExecution = await ExecuteWorkflowPhase(phase, environment);
     if (!phaseExecution.success) {
       executionFailed = true;
     }
@@ -110,9 +111,14 @@ async function FinalizeWorkflowExeuction(
     });
 }
 
-async function ExecuteWorkflowPhase(phase: ExecutionPhase) {
+async function ExecuteWorkflowPhase(
+  phase: ExecutionPhase,
+  environment: Environment
+) {
   const startedAt = new Date();
   const node = JSON.parse(phase.node) as FlowNode;
+
+  SetupEnvironmentForPhase(node, environment);
 
   await prisma.executionPhase.update({
     where: { id: phase.id },
@@ -124,7 +130,7 @@ async function ExecuteWorkflowPhase(phase: ExecutionPhase) {
 
   const creditsRequired = TaskRepository[node.data.type].credits;
 
-  const success = await ExecutePhase(phase, node);
+  const success = await ExecutePhase(phase, node, environment);
 
   await FinalizePhase(phase.id, success);
 
@@ -147,10 +153,33 @@ async function FinalizePhase(phaseId: string, success: boolean) {
 
 async function ExecutePhase(
   phase: ExecutionPhase,
-  node: FlowNode
+  node: FlowNode,
+  environment: Environment
 ): Promise<boolean> {
   const runFn = ExecutorRepository[node.data.type];
   if (!runFn) return false;
 
-  return await runFn();
+  const exeuctionEnvironment: ExecutionEnvironment<any> =
+    CreateExecutionEnvironment(node, environment);
+
+  return await runFn(exeuctionEnvironment);
+}
+
+function SetupEnvironmentForPhase(node: FlowNode, environment: Environment) {
+  environment.phases[node.id] = { inputs: {}, outputs: {} };
+  const inputs = TaskRepository[node.data.type].inputs;
+  for (const input of inputs) {
+    const inputValue = node.data.inputs[input.name];
+    if (inputValue) {
+      environment.phases[node.id].inputs[input.name] = inputValue;
+      continue;
+    }
+    // Get input value from outputs in the environment
+  }
+}
+
+function CreateExecutionEnvironment(node: FlowNode, environment: Environment) {
+  return {
+    getInput: (name: string) => environment.phases[node.id]?.inputs[name],
+  };
 }

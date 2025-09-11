@@ -15,11 +15,11 @@ export const LaunchBrowserTask = {
     {
       name: "Website Url",
       type: TaskParameterType.String,
-      helperText: "eg: https://www.google.com",
+      helperText: "eg: https://www.example.com",
       required: true,
       hideHandle: true,
     },
-  ],
+  ] as const,
 
   outputs: [{ name: "Web Page", type: TaskParameterType.Browser_Instance }],
   credits: 5,
