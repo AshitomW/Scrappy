@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { ExecutionPhase } from "@prisma/client";
 import { FlowNode } from "@/types/appnode";
 import { TaskRepository } from "./tasks/Repository";
+import { ExecutorRepository } from "./Executor/Repository";
 
 export async function ExecuteWorkflow(executionId: string) {
   const execution = await prisma.workflowExecution.findUnique({
@@ -123,8 +124,7 @@ async function ExecuteWorkflowPhase(phase: ExecutionPhase) {
 
   const creditsRequired = TaskRepository[node.data.type].credits;
 
-  await waitFor(2000);
-  const success = Math.random() < 0.7;
+  const success = await ExecutePhase(phase, node);
 
   await FinalizePhase(phase.id, success);
 
@@ -143,4 +143,14 @@ async function FinalizePhase(phaseId: string, success: boolean) {
       completedAt: new Date(),
     },
   });
+}
+
+async function ExecutePhase(
+  phase: ExecutionPhase,
+  node: FlowNode
+): Promise<boolean> {
+  const runFn = ExecutorRepository[node.data.type];
+  if (!runFn) return false;
+
+  return await runFn();
 }
