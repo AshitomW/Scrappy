@@ -19,4 +19,5 @@ export type ExecutionEnvironment<T extends WorkflowTask> = {
   setBrowser(browser: Browser): void;
   getPage(): Page | undefined;
   setPage(page: Page): void;
+  setOutput(name: T["outputs"][number]["name"], value: string): void;
 };

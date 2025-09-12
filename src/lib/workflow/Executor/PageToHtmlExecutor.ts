@@ -8,7 +8,7 @@ export async function PageToHtmlExecutor(
 ): Promise<boolean> {
   try {
     const html = await environment.getPage()!.content();
-    console.log(html);
+    environment.setOutput("Html", html);
     return true;
   } catch (error) {
     console.error(error);

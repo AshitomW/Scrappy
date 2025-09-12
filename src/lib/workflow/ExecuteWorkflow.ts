@@ -41,6 +41,8 @@ export async function ExecuteWorkflow(executionId: string) {
     creditsConsumed
   );
 
+  await CleanUpEnvironment(environment);
+
   revalidatePath("/workflow/runs");
 }
 
@@ -134,13 +136,13 @@ async function ExecuteWorkflowPhase(
   const creditsRequired = TaskRepository[node.data.type].credits;
 
   const success = await ExecutePhase(phase, node, environment);
-
-  await FinalizePhase(phase.id, success);
+  const outputs = environment.phases[node.id].outputs;
+  await FinalizePhase(phase.id, success, outputs);
 
   return { success };
 }
 
-async function FinalizePhase(phaseId: string, success: boolean) {
+async function FinalizePhase(phaseId: string, success: boolean, outputs: any) {
   const finalStatus = success
     ? ExecutionPhaseStatus.Completed
     : ExecutionPhaseStatus.Failed;
@@ -150,6 +152,7 @@ async function FinalizePhase(phaseId: string, success: boolean) {
     data: {
       status: finalStatus,
       completedAt: new Date(),
+      outputs: JSON.stringify(outputs),
     },
   });
 }
@@ -193,5 +196,16 @@ function CreateExecutionEnvironment(
     setBrowser: (browser: Browser) => (environment.browser = browser),
     getPage: () => environment.page,
     setPage: (page: Page) => (environment.page = page),
+    setOutput: (name: string, value: string) => {
+      environment.phases[node.id].outputs[name] = value;
+    },
   };
+}
+
+async function CleanUpEnvironment(environment: Environment) {
+  if (environment.browser) {
+    await environment.browser
+      .close()
+      .catch((error) => console.error("Cannot close browser,Reason:", error));
+  }
 }
