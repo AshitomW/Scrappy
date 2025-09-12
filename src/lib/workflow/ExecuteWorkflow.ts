@@ -9,6 +9,8 @@ import { FlowNode } from "@/types/appnode";
 import { TaskRepository } from "./tasks/Repository";
 import { ExecutorRepository } from "./Executor/Repository";
 import { Environment, ExecutionEnvironment } from "@/types/Executor";
+import { TaskParameterType } from "@/types/tasks";
+import { Browser, Page } from "puppeteer";
 
 export async function ExecuteWorkflow(executionId: string) {
   const execution = await prisma.workflowExecution.findUnique({
@@ -125,6 +127,7 @@ async function ExecuteWorkflowPhase(
     data: {
       status: ExecutionPhaseStatus.Running,
       startedAt,
+      inputs: JSON.stringify(environment.phases[node.id].inputs),
     },
   });
 
@@ -169,6 +172,8 @@ function SetupEnvironmentForPhase(node: FlowNode, environment: Environment) {
   environment.phases[node.id] = { inputs: {}, outputs: {} };
   const inputs = TaskRepository[node.data.type].inputs;
   for (const input of inputs) {
+    if (input.type === TaskParameterType.Browser_Instance) continue;
+
     const inputValue = node.data.inputs[input.name];
     if (inputValue) {
       environment.phases[node.id].inputs[input.name] = inputValue;
@@ -178,8 +183,15 @@ function SetupEnvironmentForPhase(node: FlowNode, environment: Environment) {
   }
 }
 
-function CreateExecutionEnvironment(node: FlowNode, environment: Environment) {
+function CreateExecutionEnvironment(
+  node: FlowNode,
+  environment: Environment
+): ExecutionEnvironment<any> {
   return {
     getInput: (name: string) => environment.phases[node.id]?.inputs[name],
+    getBrowser: () => environment.browser,
+    setBrowser: (browser: Browser) => (environment.browser = browser),
+    getPage: () => environment.page,
+    setPage: (page: Page) => (environment.page = page),
   };
 }

@@ -7,11 +7,12 @@ export async function PageToHtmlExecutor(
   environment: ExecutionEnvironment<typeof PageToHtmlTask>
 ): Promise<boolean> {
   try {
-    const websiteUrl = environment.getInput("Website Url");
-
+    const html = await environment.getPage()!.content();
+    console.log(html);
     return true;
   } catch (error) {
     console.error(error);
     return false;
   }
 }
+//7:10

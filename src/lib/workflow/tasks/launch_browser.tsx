@@ -21,6 +21,8 @@ export const LaunchBrowserTask = {
     },
   ] as const,
 
-  outputs: [{ name: "Web Page", type: TaskParameterType.Browser_Instance }],
+  outputs: [
+    { name: "Web Page", type: TaskParameterType.Browser_Instance },
+  ] as const,
   credits: 5,
 } satisfies WorkflowTask;

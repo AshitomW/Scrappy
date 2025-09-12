@@ -9,11 +9,13 @@ export async function LaunchBrowserExecutor(
     const websiteUrl = environment.getInput("Website Url");
     console.log("@url : ", websiteUrl);
     const browser = await puppeteer.launch({
-      headless: false, // will open visible browser window. for debug purposes.
+      headless: true, // will open visible browser window. for debug purposes.
     });
 
-    await waitFor(3000);
-    await browser.close();
+    environment.setBrowser(browser);
+    const page = await browser.newPage();
+    page.goto(websiteUrl);
+    environment.setPage(page);
     return true;
   } catch (error) {
     console.error(error);
