@@ -7,7 +7,9 @@ export async function ExtractTextFromElementExecutor(
 ): Promise<boolean> {
   try {
     const selector = environment.getInput("Selector");
-    if (!selector) return false;
+    if (!selector) {
+      return false;
+    }
 
     const html = environment.getInput("Html");
     if (!html) return false;
