@@ -9,6 +9,7 @@ import { MenuIcon } from "lucide-react";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { UserAvailableCreditsBadge } from "./UserAvailableCreditsBadge";
 
 export default function MobileSideBar() {
   const [isOpen, setOpen] = useState(false);
@@ -31,6 +32,7 @@ export default function MobileSideBar() {
             side="left"
           >
             <Logo />
+            <UserAvailableCreditsBadge />
             <div className="flex flex-col gap-1">
               {""}
               {routes.map((route) => {

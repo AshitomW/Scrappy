@@ -6,6 +6,7 @@ import { buttonVariants } from "./ui/button";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { routes } from "@/consants/constant";
+import { UserAvailableCreditsBadge } from "./UserAvailableCreditsBadge";
 
 export default function DesktopSidebar() {
   const pathname = usePathname();
@@ -19,7 +20,9 @@ export default function DesktopSidebar() {
       <div className="flex items-center  gap-2 border-b-[1px] border-separate p-4">
         <Logo />
       </div>
-      <div className="px-2">Active Credits: </div>
+      <div className="p-2">
+        <UserAvailableCreditsBadge />
+      </div>
       <div className="flex flex-col p-2">
         {routes.map((route) => {
           return (
