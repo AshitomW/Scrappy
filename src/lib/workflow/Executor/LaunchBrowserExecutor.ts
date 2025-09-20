@@ -14,8 +14,10 @@ export async function LaunchBrowserExecutor(
 
     environment.setBrowser(browser);
     const page = await browser.newPage();
+    environment.log.info("Browser started successfully");
     await page.goto(websiteUrl, { waitUntil: "networkidle0" });
     environment.setPage(page);
+    environment.log.info(`Opened Page At: ${websiteUrl}`);
     return true;
   } catch (error: any) {
     environment.log.error(error.message);
