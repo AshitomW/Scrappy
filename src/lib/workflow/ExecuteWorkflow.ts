@@ -12,7 +12,7 @@ import { Environment, ExecutionEnvironment } from "@/types/Executor";
 import { TaskParameterType } from "@/types/tasks";
 import { Browser, Page } from "puppeteer";
 import { Edge } from "@xyflow/react";
-import { LogCollector } from "@/types/log";
+import { Log, LogCollector } from "@/types/log";
 import { CreateLogCollector } from "../log";
 
 export async function ExecuteWorkflow(executionId: string) {
@@ -35,10 +35,12 @@ export async function ExecuteWorkflow(executionId: string) {
 
   for (const phase of execution.phases) {
     const phaseExecution = await ExecuteWorkflowPhase(
+      execution.userId,
       phase,
       environment,
       edges
     );
+    creditsConsumed += phaseExecution.creditsConsumed;
     if (!phaseExecution.success) {
       executionFailed = true;
     }
@@ -126,6 +128,7 @@ async function FinalizeWorkflowExeuction(
 }
 
 async function ExecuteWorkflowPhase(
+  userId: string,
   phase: ExecutionPhase,
   environment: Environment,
   edges: Edge[]
@@ -147,17 +150,29 @@ async function ExecuteWorkflowPhase(
 
   const creditsRequired = TaskRepository[node.data.type].credits;
 
-  const success = await ExecutePhase(phase, node, environment, logCollector);
-  const outputs = environment.phases[node.id].outputs;
-  await FinalizePhase(phase.id, success, outputs, logCollector);
+  let success = await DecrementCredits(userId, creditsRequired, logCollector);
+  const creditsConsumed = success ? creditsRequired : 0;
 
-  return { success };
+  if (success) {
+    success = await ExecutePhase(phase, node, environment, logCollector);
+  }
+  const outputs = environment.phases[node.id].outputs;
+  await FinalizePhase(
+    phase.id,
+    success,
+    outputs,
+    creditsConsumed,
+    logCollector
+  );
+
+  return { success, creditsConsumed };
 }
 
 async function FinalizePhase(
   phaseId: string,
   success: boolean,
   outputs: any,
+  creditsConsumed: number,
   logCollector: LogCollector
 ) {
   const finalStatus = success
@@ -170,6 +185,7 @@ async function FinalizePhase(
       status: finalStatus,
       completedAt: new Date(),
       outputs: JSON.stringify(outputs),
+      creditsConsumed,
       logs: {
         createMany: {
           data: logCollector.getAll().map((log) => ({
@@ -260,5 +276,22 @@ async function CleanUpEnvironment(environment: Environment) {
     await environment.browser
       .close()
       .catch((error) => console.error("Cannot close browser,Reason:", error));
+  }
+}
+
+async function DecrementCredits(
+  userId: string,
+  amount: number,
+  logCollector: LogCollector
+) {
+  try {
+    await prisma.userBalance.update({
+      where: { userId, credits: { gte: amount } },
+      data: { credits: { decrement: amount } },
+    });
+    return true;
+  } catch (error) {
+    logCollector.error("Insufficient Balance");
+    return false;
   }
 }
