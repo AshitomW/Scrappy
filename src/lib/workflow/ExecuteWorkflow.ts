@@ -192,10 +192,6 @@ async function ExecutePhase(
   const runFn = ExecutorRepository[node.data.type];
   if (!runFn) return false;
 
-  // debug purpose
-  await waitFor(3000);
-  // ----
-
   const exeuctionEnvironment: ExecutionEnvironment<any> =
     CreateExecutionEnvironment(node, environment, logCollector);
 
