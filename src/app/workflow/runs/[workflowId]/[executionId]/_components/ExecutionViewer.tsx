@@ -89,7 +89,14 @@ export default function ExecutionViewer({
         setSelectedPhase(phaseToSelect.id);
         return;
       }
+
+      const phaseToSelect = phases.toSorted((a, b) =>
+        a.completedAt! > b.completedAt! ? -1 : 1
+      )[0];
+
+      setSelectedPhase(phaseToSelect.id);
     },
+
     [query.data?.phases, isRunning, setSelectedPhase]
   );
 
