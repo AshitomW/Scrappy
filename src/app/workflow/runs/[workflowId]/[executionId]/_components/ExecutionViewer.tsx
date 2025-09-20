@@ -120,7 +120,49 @@ export default function ExecutionViewer({
         </div>
       </aside>
       <div className="flex w-full h-full">
-        <pre>{JSON.stringify(phaseDetails.data, null, 4)}</pre>
+        {isRunning && (
+          <div className="flex items-center flex-col gap-2 justify-center h-full w-full">
+            <p className="font-bold">Execution is in progress, please wait</p>
+          </div>
+        )}
+
+        {!isRunning && !selectedPhase && (
+          <div className="flex items-center flex-col gap-2 justify-center h-full w-full">
+            <div className="flex flex-col gap-1 text-center">
+              <p className="font-bold">No Phase Selected</p>
+              <p className="text-sm text-muted-foreground">
+                Select a phase to view details.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!isRunning && selectedPhase && phaseDetails.data && (
+          <div className="flex flex-col p-4 container gap-4 overflow-auto">
+            <div className="flex gap-2 items-center">
+              <Badge variant={"outline"} className="space-x-4">
+                <div className="flex gap-1 items-center">
+                  <CoinsIcon size={18} className="stroke-muted-foreground" />
+                  <span>Credits</span>
+                </div>
+                <span>Todo</span>
+              </Badge>
+              <Badge variant={"outline"} className="space-x-4">
+                <div className="flex gap-1 items-center">
+                  <ClockIcon size={18} className="stroke-muted-foreground" />
+                  <span>Duration</span>
+                </div>
+                <span>
+                  {DateToDurationString(
+                    phaseDetails.data.startedAt,
+                    phaseDetails.data.completedAt
+                  ) || "-"}
+                </span>
+              </Badge>
+            </div>
+            {/* Render Details About Execution */}
+          </div>
+        )}
       </div>
     </div>
   );
