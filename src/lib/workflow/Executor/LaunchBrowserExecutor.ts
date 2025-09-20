@@ -14,7 +14,7 @@ export async function LaunchBrowserExecutor(
 
     environment.setBrowser(browser);
     const page = await browser.newPage();
-    page.goto(websiteUrl);
+    await page.goto(websiteUrl, { waitUntil: "networkidle0" });
     environment.setPage(page);
     return true;
   } catch (error) {
