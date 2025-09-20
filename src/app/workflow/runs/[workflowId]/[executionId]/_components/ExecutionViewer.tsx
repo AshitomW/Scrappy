@@ -16,7 +16,7 @@ import {
   LucideIcon,
   WorkflowIcon,
 } from "lucide-react";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { DateToDurationString } from "@/lib/helpers/date";
 import { GetPhasesTotalCost } from "@/lib/helpers/phases";
 import { GetWorkflowPhaseDetails } from "@/actions/workflows/GetWorkflowPhaseDetails";
@@ -75,6 +75,24 @@ export default function ExecutionViewer({
   });
 
   const isRunning = query.data?.status === ExecutionStatus.Running;
+
+  useEffect(
+    function () {
+      // select the currently executing phase
+
+      const phases = query.data?.phases || [];
+      if (isRunning) {
+        const phaseToSelect = phases.toSorted((a, b) =>
+          a.startedAt! > b.startedAt! ? -1 : 1
+        )[0];
+
+        setSelectedPhase(phaseToSelect.id);
+        return;
+      }
+    },
+    [query.data?.phases, isRunning, setSelectedPhase]
+  );
+
   return (
     <div className="flex w-full h-full ">
       <aside className="w-[400px] min-w-[400px] max-w-[400px] border-r-2 border-separate flex flex-grow flex-col overflow-hidden">
