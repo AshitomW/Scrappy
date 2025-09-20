@@ -28,7 +28,7 @@ export function UserAvailableCreditsBadge() {
         {!query.isLoading && query.data && (
           <ReactCountWrapper value={query.data} />
         )}
-        {!query.isLoading && !query.data && "-"}
+        {!query.isLoading && !query.data === undefined && "-"}
       </span>
     </Link>
   );
