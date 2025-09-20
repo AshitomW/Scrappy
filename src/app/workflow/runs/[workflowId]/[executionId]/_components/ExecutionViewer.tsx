@@ -2,7 +2,7 @@
 import GetWorkflowExecutionWithPhases from "@/actions/workflows/GetWorkflowExecutionWithPhases";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ExecutionStatus } from "@/types/workflow";
+import { ExecutionPhaseStatus, ExecutionStatus } from "@/types/workflow";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
@@ -42,6 +42,7 @@ import { Input } from "@/components/ui/input";
 import { ExecutionLog } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { LogLevel } from "@/types/log";
+import PhaseStatusBadge from "./PhaseStatusBadge";
 
 type ExecutionData = Awaited<ReturnType<typeof GetWorkflowExecutionWithPhases>>;
 
@@ -135,7 +136,9 @@ export default function ExecutionViewer({
                   <Badge variant={"outline"}>{index + 1}</Badge>
                   <p className="font-semibold">{phase.name}</p>
                 </div>
-                <p className="text-xs text-muted-foreground">{phase.status}</p>
+                <PhaseStatusBadge
+                  status={phase.status as ExecutionPhaseStatus}
+                />
               </Button>
             );
           })}
