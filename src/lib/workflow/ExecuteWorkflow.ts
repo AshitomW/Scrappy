@@ -101,7 +101,7 @@ async function FinalizeWorkflowExeuction(
   creditsConsumed: number
 ) {
   const finalStatus = executionFailed
-    ? ExecutionStatus.Completed
+    ? ExecutionStatus.Failed
     : ExecutionStatus.Completed;
 
   await prisma.workflowExecution.update({
