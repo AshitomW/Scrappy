@@ -1,6 +1,6 @@
 "use client";
 
-import { Workflows } from "@prisma/client";
+import { Workflow } from "@prisma/client";
 import { ReactFlowProvider } from "@xyflow/react";
 import React from "react";
 import FlowEditor from "./FlowEditor";
@@ -10,9 +10,10 @@ import {
   FlowValidationContext,
   FlowValidationContextProvider,
 } from "@/components/context/FlowValidationContext";
+import { WorkflowStatus } from "@/types/workflow";
 
 interface Props {
-  workflow: Workflows;
+  workflow: Workflow;
 }
 export default function Editor({ workflow }: Props) {
   return (
@@ -23,6 +24,7 @@ export default function Editor({ workflow }: Props) {
             title="Workflow Editor"
             subtitle={workflow.name}
             workflowId={workflow.id}
+            isPublished={workflow.status === WorkflowStatus.PUBLISHED}
           />
           <section className="flex h-full overflow-auto">
             <TaskMenu />
