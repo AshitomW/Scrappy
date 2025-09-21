@@ -17,9 +17,7 @@ export default function NavigationTabs({ workflowId }: { workflowId: string }) {
           </TabsTrigger>
         </Link>
         <Link href={`/workflow/runs/${workflowId}`}>
-          {" "}
           <TabsTrigger value="runs" className="w-full">
-            {" "}
             Runs
           </TabsTrigger>
         </Link>
