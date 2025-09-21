@@ -73,6 +73,8 @@ export default function ExecutionViewer({
     queryKey: ["phaseDetails", selectedPhase],
     enabled: selectedPhase !== null,
     queryFn: () => GetWorkflowPhaseDetails(selectedPhase!),
+    refetchInterval: (query) =>
+      query.state.data?.status === ExecutionStatus.Running ? 1000 : false,
   });
 
   const isRunning = query.data?.status === ExecutionStatus.Running;
@@ -80,7 +82,6 @@ export default function ExecutionViewer({
   useEffect(
     function () {
       // select the currently executing phase
-
       const phases = query.data?.phases || [];
       if (isRunning) {
         const phaseToSelect = phases.toSorted((a, b) =>
@@ -98,7 +99,7 @@ export default function ExecutionViewer({
       setSelectedPhase(phaseToSelect.id);
     },
 
-    [query.data?.phases, isRunning, setSelectedPhase]
+    [query.data?.phases, isRunning]
   );
 
   return (
