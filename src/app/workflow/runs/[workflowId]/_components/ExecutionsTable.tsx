@@ -17,6 +17,8 @@ import ExecutionStatusIndicator from "./ExecutionStatusIndicator";
 import { ExecutionStatus } from "@/types/workflow";
 import { CoinsIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useRouter } from "next/navigation";
+import { exec } from "child_process";
 
 type InitialWorkflowData = Awaited<ReturnType<typeof GetWorkflowExecutions>>;
 
@@ -27,6 +29,7 @@ export default function ExecutionsTable({
   workflowId: string;
   initialData: InitialWorkflowData;
 }) {
+  const router = useRouter();
   const query = useQuery({
     queryKey: ["execution", workflowId],
     initialData,
@@ -58,7 +61,13 @@ export default function ExecutionsTable({
               execution.startedAt &&
               formatDistanceToNow(execution.startedAt, { addSuffix: true });
             return (
-              <TableRow key={execution.id}>
+              <TableRow
+                key={execution.id}
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push(`/workflow/runs/${workflowId}/${execution.id}`);
+                }}
+              >
                 <TableCell>
                   <div className="flex flex-col">
                     <span className="font-semibold">{execution.id}</span>
