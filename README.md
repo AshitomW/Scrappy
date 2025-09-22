@@ -1,3 +1,2 @@
 # Scrapper
 
-Scraping Workflow Platform
