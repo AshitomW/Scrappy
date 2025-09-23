@@ -14,8 +14,9 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { CalendarIcon, TriangleAlertIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import cronstrue from "cronstrue";
 
 export default function SchedulerDialog({
   workflowId,
@@ -23,6 +24,18 @@ export default function SchedulerDialog({
   workflowId: string;
 }) {
   const [cron, setCron] = useState("");
+  const [validCron, setValidCron] = useState(false);
+  const [readableCron, setReadableCron] = useState("");
+
+  useEffect(() => {
+    try {
+      const humanCronString = cronstrue.toString(cron);
+      setValidCron(true);
+      setReadableCron(humanCronString);
+    } catch (error) {
+      setValidCron(false);
+    }
+  }, [cron]);
 
   const mutation = useMutation({
     mutationFn: UpdateWorkflowCron,
@@ -62,6 +75,14 @@ export default function SchedulerDialog({
             value={cron}
             onChange={(e) => setCron(e.target.value)}
           />
+          <div
+            className={cn(
+              "bg-accent rounded-md p-4 border text-sm  border-destructive text-destructive",
+              validCron && "border-emerald-400 text-emerald-600"
+            )}
+          >
+            {validCron ? readableCron : "Not a valid cron expression"}
+          </div>
         </div>
         <DialogFooter className="px-6 !flex-col">
           <DialogClose asChild>
