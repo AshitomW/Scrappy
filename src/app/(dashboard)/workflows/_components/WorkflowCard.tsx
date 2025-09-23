@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ExecutionStatus, WorkflowStatus } from "@/types/workflow";
 import {
   ChevronRightIcon,
+  ClockIcon,
   CoinsIcon,
   CornerDownRightIcon,
   FileTextIcon,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { formatInTimeZone } from "date-fns-tz";
 
 import {
   DropdownMenu,
@@ -33,7 +35,7 @@ import RunButton from "./RunButton";
 import SchedulerDialog from "./SchedulerDialog";
 import { Badge } from "@/components/ui/badge";
 import ExecutionStatusIndicator from "@/app/workflow/runs/[workflowId]/_components/ExecutionStatusIndicator";
-import { formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 
 interface Props {
   workflow: Workflow;
@@ -195,6 +197,17 @@ function LastRunDetails({ workflow }: { workflow: Workflow }) {
   const formattedStartedAt =
     workflow.lastRunAt &&
     formatDistanceToNow(workflow.lastRunAt, { addSuffix: true });
+
+  const nextSchedule =
+    workflow.nextRunAt && format(workflow.nextRunAt, "yyyy-MM-dd HH:mm");
+
+  const nextScheduleUTC =
+    workflow.nextRunAt && formatInTimeZone(workflow.nextRunAt, "UTC", "HH:mm");
+
+  const isDraft = workflow.status === WorkflowStatus.DRAFT;
+
+  if (isDraft) return;
+
   return (
     <div className="bg-primary/5 px-4 py-2 flex justify-between items-center text-muted-foreground">
       <div className="flex items-center text-sm gap-2">
@@ -217,6 +230,14 @@ function LastRunDetails({ workflow }: { workflow: Workflow }) {
         )}
         {!workflow.lastRunAt && <p>No Executions Yet</p>}
       </div>
+      {workflow.nextRunAt && (
+        <div className="flex items-center text-sm gap-2">
+          <ClockIcon size={18} />
+          <span>Next run at:</span>
+          <span>{nextSchedule}</span>
+          <span>({nextScheduleUTC} UTC)</span>
+        </div>
+      )}
     </div>
   );
 }
