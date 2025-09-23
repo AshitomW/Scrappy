@@ -6,6 +6,7 @@ import { useReactFlow } from "@xyflow/react";
 import { FlowNode } from "@/types/appnode";
 import { useCallback } from "react";
 import BrowserInstanceParameter from "./parameters/BrowserInstanceParameter";
+import SelectParameter from "./parameters/SelectParameter";
 
 export default function NodeParameterField({
   parameter,
@@ -47,6 +48,16 @@ export default function NodeParameterField({
         <BrowserInstanceParameter
           parameter={parameter}
           updateNodeParameterValue={updateNodeParameterValue}
+        />
+      );
+
+    case TaskParameterType.Select:
+      return (
+        <SelectParameter
+          parameter={parameter}
+          value={value}
+          updateNodeParameterValue={updateNodeParameterValue}
+          disabled={disabled}
         />
       );
 
