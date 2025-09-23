@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Workflows } from "@prisma/client";
+import { Workflow } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { WorkflowStatus } from "@/types/workflow";
 import {
@@ -25,9 +25,10 @@ import {
 import TooltipWrapper from "@/components/TooltipWrapper";
 import { useState } from "react";
 import DeleteWorkflowDialog from "./DeleteWorkflowDialog";
+import RunButton from "./RunButton";
 
 interface Props {
-  workflow: Workflows;
+  workflow: Workflow;
 }
 
 const statusColors = {
@@ -70,6 +71,7 @@ export default function WorkflowCard({ workflow }: Props) {
           </div>
         </div>
         <div className="flex items-center space-x-2">
+          {!isDraft && <RunButton workflowId={workflow.id} />}
           <Link
             href={`/workflow/editor/${workflow.id}`}
             className={cn(
