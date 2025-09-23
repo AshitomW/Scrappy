@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import cronstrue from "cronstrue";
 import parser from "cron-parser";
+import { RemoveWorkflowSchedule } from "@/actions/workflows/removeWorkflowSchedule";
 
 export default function SchedulerDialog(props: {
   workflowId: string;
@@ -46,6 +47,16 @@ export default function SchedulerDialog(props: {
     mutationFn: UpdateWorkflowCron,
     onSuccess: () => {
       toast.success("Schedule update successfully", { id: "cron" });
+    },
+    onError: () => {
+      toast.error("Something Went Wrong", { id: "cron" });
+    },
+  });
+
+  const removeSchedulerMutation = useMutation({
+    mutationFn: RemoveWorkflowSchedule,
+    onSuccess: () => {
+      toast.success("Remove schedule successfully", { id: "cron" });
     },
     onError: () => {
       toast.error("Something Went Wrong", { id: "cron" });
