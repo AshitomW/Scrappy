@@ -5,8 +5,11 @@ import { Workflow } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { WorkflowStatus } from "@/types/workflow";
 import {
+  CoinsIcon,
+  CornerDownRightIcon,
   FileTextIcon,
   MoreVerticalIcon,
+  MoveRightIcon,
   PlayIcon,
   ShuffleIcon,
   TrashIcon,
@@ -26,6 +29,8 @@ import TooltipWrapper from "@/components/TooltipWrapper";
 import { useState } from "react";
 import DeleteWorkflowDialog from "./DeleteWorkflowDialog";
 import RunButton from "./RunButton";
+import SchedulerDialog from "./SchedulerDialog";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   workflow: Workflow;
@@ -68,6 +73,10 @@ export default function WorkflowCard({ workflow }: Props) {
                 </span>
               )}
             </h3>
+            <ScheduleSection
+              isDraft={isDraft}
+              creditsCost={workflow.creditsCost}
+            />
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -137,5 +146,33 @@ function WorkflowActions({
         </DropdownMenuContent>
       </DropdownMenu>
     </>
+  );
+}
+
+function ScheduleSection({
+  isDraft,
+  creditsCost,
+}: {
+  isDraft: boolean;
+  creditsCost: number;
+}) {
+  if (isDraft) return;
+  return (
+    <div className="flex items-center gap-2">
+      <CornerDownRightIcon className="h-4 w-4 text-muted-foreground" />
+      <SchedulerDialog />
+      <MoveRightIcon className="h-4 w-4 text-muted-foreground" />
+      <TooltipWrapper content="Credits consumption for full run">
+        <div className="flex items-center gap-3">
+          <Badge
+            variant={"outline"}
+            className="space-x-2 text-muted-foreground rounded-sm"
+          >
+            <CoinsIcon className="w-4 h-4" />
+            <span className="text-sm">{creditsCost}</span>
+          </Badge>
+        </div>
+      </TooltipWrapper>
+    </div>
   );
 }
