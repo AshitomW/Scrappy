@@ -17,6 +17,7 @@ import { CalendarIcon, ClockIcon, TriangleAlertIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import cronstrue from "cronstrue";
+import parser from "cron-parser";
 
 export default function SchedulerDialog(props: {
   workflowId: string;
@@ -28,6 +29,7 @@ export default function SchedulerDialog(props: {
 
   useEffect(() => {
     try {
+      parser.parseExpression(cron);
       const humanCronString = cronstrue.toString(cron);
       setValidCron(true);
       setReadableCron(humanCronString);
@@ -35,6 +37,10 @@ export default function SchedulerDialog(props: {
       setValidCron(false);
     }
   }, [cron]);
+
+  const workflowHasValidCron = props.cron && props.cron.length > 0;
+  const readableSavedCron =
+    workflowHasValidCron && cronstrue.toString(props.cron!);
 
   const mutation = useMutation({
     mutationFn: UpdateWorkflowCron,
@@ -54,16 +60,16 @@ export default function SchedulerDialog(props: {
           size={"sm"}
           className={cn(
             "text-sm p-0 h-auto text-orange-500",
-            validCron && "text-primary"
+            workflowHasValidCron && "text-primary"
           )}
         >
-          {validCron && (
+          {workflowHasValidCron && (
             <div className="flex items-center gap-1">
               <ClockIcon />
-              {readableCron}
+              {readableSavedCron}
             </div>
           )}
-          {!validCron && (
+          {!workflowHasValidCron && (
             <div className="flex items-center gap-1">
               <TriangleAlertIcon className="h-3 w-3 mr-1" /> Set Schedule
             </div>
@@ -105,6 +111,7 @@ export default function SchedulerDialog(props: {
                   cron,
                 });
               }}
+              disabled={mutation.isPending || !validCron}
             >
               Save
             </Button>
