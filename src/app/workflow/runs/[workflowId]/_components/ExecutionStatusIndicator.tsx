@@ -8,6 +8,12 @@ const indicatorColors: Record<ExecutionStatus, string> = {
   Failed: "bg-red-400",
   Completed: "bg-emerald-600",
 };
+const labelColors: Record<ExecutionStatus, string> = {
+  Pending: "text-slate-400",
+  Running: "text-yellow-400",
+  Failed: "text-red-400",
+  Completed: "text-emerald-600",
+};
 
 export default function ExecutionStatusIndicator({
   status,
@@ -16,5 +22,11 @@ export default function ExecutionStatusIndicator({
 }) {
   return (
     <div className={cn("w-2 h-2 rounded-full", indicatorColors[status])} />
+  );
+}
+
+export function ExecutionStatusLabel({ status }: { status: ExecutionStatus }) {
+  return (
+    <span className={cn("capitalize", labelColors[status])}>{status}</span>
   );
 }
