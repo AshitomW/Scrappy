@@ -47,7 +47,7 @@ const statusColors = {
 export default function WorkflowCard({ workflow }: Props) {
   const isDraft = workflow.status == WorkflowStatus.DRAFT;
   return (
-    <Card className="border p-0 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30">
+    <Card className="border gap-0 p-0 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30">
       <CardContent className="p-6 flex items-center justify-between h-[100px]">
         <div className="flex justify-center items-center space-x-3">
           <div
