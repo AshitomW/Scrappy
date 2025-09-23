@@ -15,7 +15,7 @@ import { Edge } from "@xyflow/react";
 import { Log, LogCollector } from "@/types/log";
 import { CreateLogCollector } from "../log";
 
-export async function ExecuteWorkflow(executionId: string) {
+export async function ExecuteWorkflow(executionId: string, nextRunAt?: Date) {
   const execution = await prisma.workflowExecution.findUnique({
     where: { id: executionId },
     include: { workflow: true, phases: true },
@@ -28,7 +28,11 @@ export async function ExecuteWorkflow(executionId: string) {
   const edges = JSON.parse(execution.definition).edges as Edge[];
 
   const environment: Environment = { phases: {} };
-  await InitializeWorkflowExecution(executionId, execution.workflowId);
+  await InitializeWorkflowExecution(
+    executionId,
+    execution.workflowId,
+    nextRunAt
+  );
   await InitializePhaseStatuses(execution);
   let creditsConsumed = 0;
   let executionFailed = false;
@@ -60,7 +64,8 @@ export async function ExecuteWorkflow(executionId: string) {
 
 async function InitializeWorkflowExecution(
   executionId: string,
-  workflowId: string
+  workflowId: string,
+  nextRunAt?: Date
 ) {
   await prisma.workflowExecution.update({
     where: {
@@ -78,6 +83,7 @@ async function InitializeWorkflowExecution(
       lastRunAt: new Date(),
       lastRunStatus: ExecutionStatus.Running,
       lastRunId: executionId,
+      ...(nextRunAt && { nextRunAt }),
     },
   });
 }
