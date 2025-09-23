@@ -16,6 +16,8 @@ model Workflow{
   name String
   description String?
 
+  cron String? // Cron Scheduling
+
   definition String
   executionPlan String?
   creditsCost Int @default(0)
@@ -32,6 +34,7 @@ model Workflow{
   lastRunAt DateTime?
   lastRunId String?
   lastRunStatus String?
+  nextRunAt DateTime?
 
 }
 
