@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import cronstrue from "cronstrue";
 import parser from "cron-parser";
 import { RemoveWorkflowSchedule } from "@/actions/workflows/removeWorkflowSchedule";
+import { Separator } from "@/components/ui/separator";
 
 export default function SchedulerDialog(props: {
   workflowId: string;
@@ -110,11 +111,36 @@ export default function SchedulerDialog(props: {
           >
             {validCron ? readableCron : "Not a valid cron expression"}
           </div>
+          {workflowHasValidCron && (
+            <DialogClose asChild>
+              <div className="">
+                <Button
+                  className="w-full text-destructive border-destructive hover:text-destructive"
+                  variant={"outline"}
+                  disabled={
+                    mutation.isPending || removeSchedulerMutation.isPending
+                  }
+                  onClick={() => {
+                    toast.loading("Removing schedule...", { id: "cron" });
+                    removeSchedulerMutation.mutate(props.workflowId);
+                  }}
+                >
+                  Remove current schedule
+                </Button>
+                <Separator className="my-4" />
+              </div>
+            </DialogClose>
+          )}
         </div>
-        <DialogFooter className="px-6 !flex-col">
+        <DialogFooter className="px-6 ">
+          <DialogClose asChild>
+            <Button className="flex-1" variant={"outline"}>
+              Cancel
+            </Button>
+          </DialogClose>
           <DialogClose asChild>
             <Button
-              className="w-full"
+              className="flex-1"
               onClick={() => {
                 toast.loading("Saving...", { id: "cron" });
                 mutation.mutate({
@@ -125,11 +151,6 @@ export default function SchedulerDialog(props: {
               disabled={mutation.isPending || !validCron}
             >
               Save
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button className="w-full" variant={"outline"}>
-              Cancel
             </Button>
           </DialogClose>
         </DialogFooter>

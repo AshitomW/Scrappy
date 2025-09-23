@@ -17,5 +17,5 @@ export async function RemoveWorkflowSchedule(id: string) {
     },
   });
 
-  revalidatePath("/workflows");
+  revalidatePath("/workflows/");
 }
