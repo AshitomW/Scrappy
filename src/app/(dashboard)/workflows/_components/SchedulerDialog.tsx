@@ -1,5 +1,6 @@
 "use client";
 
+import UpdateWorkflowCron from "@/actions/workflows/updateWorkflowCron";
 import CustomDialogHeader from "@/components/CustomDIalogHeader";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,8 +14,26 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { CalendarIcon, TriangleAlertIcon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
-export default function SchedulerDialog() {
+export default function SchedulerDialog({
+  workflowId,
+}: {
+  workflowId: string;
+}) {
+  const [cron, setCron] = useState("");
+
+  const mutation = useMutation({
+    mutationFn: UpdateWorkflowCron,
+    onSuccess: () => {
+      toast.success("Schedule update successfully", { id: "cron" });
+    },
+    onError: () => {
+      toast.error("Something Went Wrong", { id: "cron" });
+    },
+  });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,11 +57,26 @@ export default function SchedulerDialog() {
             Specify a cron expression to schedule periodic workflow execution.
             All times are in UTC
           </p>
-          <Input placeholder="E.g * * * * *" />
+          <Input
+            placeholder="E.g * * * * *"
+            value={cron}
+            onChange={(e) => setCron(e.target.value)}
+          />
         </div>
         <DialogFooter className="px-6 !flex-col">
           <DialogClose asChild>
-            <Button className="w-full">Save</Button>
+            <Button
+              className="w-full"
+              onClick={() => {
+                toast.loading("Saving...", { id: "cron" });
+                mutation.mutate({
+                  id: workflowId,
+                  cron,
+                });
+              }}
+            >
+              Save
+            </Button>
           </DialogClose>
           <DialogClose asChild>
             <Button className="w-full" variant={"outline"}>
