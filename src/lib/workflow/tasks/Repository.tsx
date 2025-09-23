@@ -5,6 +5,7 @@ import { PageToHtmlTask } from "./page_to_html";
 import { WorkflowTask } from "@/types/workflow";
 import { FillInputTask } from "./fill_input";
 import { ClickElementTask } from "./click_element";
+import { WaitForElementTask } from "./wait_for_element";
 
 type Repository = {
   [K in TaskType]: WorkflowTask & { type: K };
@@ -16,4 +17,5 @@ export const TaskRepository: Repository = {
   EXTRACT_TEXT_FROM_ELEMENT: ExtractTextFromElement,
   FILL_INPUT: FillInputTask,
   CLICK_ELEMENT: ClickElementTask,
+  WAIT_FOR_ELEMENT: WaitForElementTask,
 };

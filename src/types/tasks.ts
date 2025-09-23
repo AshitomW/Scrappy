@@ -4,11 +4,13 @@ export enum TaskType {
   EXTRACT_TEXT_FROM_ELEMENT = "EXTRACT_TEXT_FROM_ELEMENT",
   FILL_INPUT = "FILL_INPUT",
   CLICK_ELEMENT = "CLICK_ELEMENT",
+  WAIT_FOR_ELEMENT = "WAIT_FOR_ELEMENT",
 }
 
 export enum TaskParameterType {
   String = "string",
   Browser_Instance = "Browser_Instance",
+  Select = "Select",
 }
 
 export interface TaskParameter {
@@ -16,6 +18,6 @@ export interface TaskParameter {
   type: TaskParameterType;
   helperText?: string;
   required?: boolean;
-  variant?: string;
   hideHandle?: boolean;
+  [key: string]: any;
 }
