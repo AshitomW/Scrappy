@@ -38,6 +38,7 @@ import ExecutionStatusIndicator, {
   ExecutionStatusLabel,
 } from "@/app/workflow/runs/[workflowId]/_components/ExecutionStatusIndicator";
 import { format, formatDistanceToNow } from "date-fns";
+import DuplicateWorkflowDialog from "./DuplicateWorkflowDialog";
 
 interface Props {
   workflow: Workflow;
@@ -51,7 +52,7 @@ const statusColors = {
 export default function WorkflowCard({ workflow }: Props) {
   const isDraft = workflow.status == WorkflowStatus.DRAFT;
   return (
-    <Card className="border gap-0 p-0 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30">
+    <Card className="border gap-0 p-0 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30 group/card">
       <CardContent className="p-6 flex items-center justify-between h-[100px]">
         <div className="flex justify-center items-center space-x-3">
           <div
@@ -79,7 +80,9 @@ export default function WorkflowCard({ workflow }: Props) {
                   Draft
                 </span>
               )}
+              <DuplicateWorkflowDialog workflowId={workflow.id} />
             </h3>
+
             <ScheduleSection
               workflowId={workflow.id}
               isDraft={isDraft}
