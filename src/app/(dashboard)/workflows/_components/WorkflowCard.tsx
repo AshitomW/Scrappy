@@ -48,7 +48,7 @@ export default function WorkflowCard({ workflow }: Props) {
   const isDraft = workflow.status == WorkflowStatus.DRAFT;
   return (
     <Card className="border p-0 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30">
-      <CardContent className="p-4 flex items-center justify-between h-[100px]">
+      <CardContent className="p-6 flex items-center justify-between h-[100px]">
         <div className="flex justify-center items-center space-x-3">
           <div
             className={cn(
@@ -196,7 +196,7 @@ function LastRunDetails({ workflow }: { workflow: Workflow }) {
     workflow.lastRunAt &&
     formatDistanceToNow(workflow.lastRunAt, { addSuffix: true });
   return (
-    <div className="bg-primary/5 px-4 py-1 flex justify-between items-center text-muted-foreground">
+    <div className="bg-primary/5 px-4 py-2 flex justify-between items-center text-muted-foreground">
       <div className="flex items-center text-sm gap-2">
         {workflow.lastRunAt && (
           <Link
@@ -215,6 +215,7 @@ function LastRunDetails({ workflow }: { workflow: Workflow }) {
             />
           </Link>
         )}
+        {!workflow.lastRunAt && <p>No Executions Yet</p>}
       </div>
     </div>
   );
