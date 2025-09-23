@@ -212,7 +212,12 @@ async function ExecutePhase(
   logCollector: LogCollector
 ): Promise<boolean> {
   const runFn = ExecutorRepository[node.data.type];
-  if (!runFn) return false;
+  if (!runFn) {
+    logCollector.error(
+      `Internal Error: Executor Not Defined For ${node.data.type}`
+    );
+    return false;
+  }
 
   const exeuctionEnvironment: ExecutionEnvironment<any> =
     CreateExecutionEnvironment(node, environment, logCollector);
