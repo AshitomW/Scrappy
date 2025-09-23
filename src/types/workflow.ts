@@ -40,4 +40,5 @@ export enum ExecutionPhaseStatus {
 
 export enum ExecutionTrigger {
   Manual = "MANUAL",
+  CRON = "CRON",
 }
