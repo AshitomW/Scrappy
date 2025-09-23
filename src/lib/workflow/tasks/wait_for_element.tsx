@@ -25,6 +25,7 @@ export const WaitForElementTask = {
       name: "Visibility",
       type: TaskParameterType.Select,
       required: true,
+      hideHandle: true,
       options: [
         {
           label: "Visible",

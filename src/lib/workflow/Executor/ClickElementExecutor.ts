@@ -12,7 +12,7 @@ export async function ClickElementExecutor(
 
     await environment.getPage()!.click(selector);
 
-    await waitFor(10000);
+    await waitFor(3000);
     return true;
   } catch (error: any) {
     environment.log.error(error);
