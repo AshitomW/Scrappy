@@ -70,11 +70,9 @@ export default function ExecutionViewer({
   const creditsConsumed = GetPhasesTotalCost(query.data?.phases || []);
 
   const phaseDetails = useQuery({
-    queryKey: ["phaseDetails", selectedPhase],
+    queryKey: ["phaseDetails", selectedPhase, query.data?.status],
     enabled: selectedPhase !== null,
     queryFn: () => GetWorkflowPhaseDetails(selectedPhase!),
-    refetchInterval: (query) =>
-      query.state.data?.status === ExecutionStatus.Running ? 1000 : false,
   });
 
   const isRunning = query.data?.status === ExecutionStatus.Running;
