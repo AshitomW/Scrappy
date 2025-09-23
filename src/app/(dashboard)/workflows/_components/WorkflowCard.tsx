@@ -3,8 +3,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Workflow } from "@prisma/client";
 import { cn } from "@/lib/utils";
-import { WorkflowStatus } from "@/types/workflow";
+import { ExecutionStatus, WorkflowStatus } from "@/types/workflow";
 import {
+  ChevronRightIcon,
   CoinsIcon,
   CornerDownRightIcon,
   FileTextIcon,
@@ -31,6 +32,8 @@ import DeleteWorkflowDialog from "./DeleteWorkflowDialog";
 import RunButton from "./RunButton";
 import SchedulerDialog from "./SchedulerDialog";
 import { Badge } from "@/components/ui/badge";
+import ExecutionStatusIndicator from "@/app/workflow/runs/[workflowId]/_components/ExecutionStatusIndicator";
+import { formatDistanceToNow } from "date-fns";
 
 interface Props {
   workflow: Workflow;
@@ -44,7 +47,7 @@ const statusColors = {
 export default function WorkflowCard({ workflow }: Props) {
   const isDraft = workflow.status == WorkflowStatus.DRAFT;
   return (
-    <Card className="border p-2 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30">
+    <Card className="border p-0 border-separate  rounded-md overflow-hidden hover:shadow-md dark:shadow-primary/30">
       <CardContent className="p-4 flex items-center justify-between h-[100px]">
         <div className="flex justify-center items-center space-x-3">
           <div
@@ -101,6 +104,7 @@ export default function WorkflowCard({ workflow }: Props) {
           />
         </div>
       </CardContent>
+      <LastRunDetails workflow={workflow} />
     </Card>
   );
 }
@@ -183,6 +187,35 @@ function ScheduleSection({
           </Badge>
         </div>
       </TooltipWrapper>
+    </div>
+  );
+}
+
+function LastRunDetails({ workflow }: { workflow: Workflow }) {
+  const formattedStartedAt =
+    workflow.lastRunAt &&
+    formatDistanceToNow(workflow.lastRunAt, { addSuffix: true });
+  return (
+    <div className="bg-primary/5 px-4 py-1 flex justify-between items-center text-muted-foreground">
+      <div className="flex items-center text-sm gap-2">
+        {workflow.lastRunAt && (
+          <Link
+            href={`/workflow/runs/${workflow.id}/${workflow.lastRunId}`}
+            className="flex items-center text-sm gap-2 group"
+          >
+            <span>Last Run:</span>
+            <ExecutionStatusIndicator
+              status={workflow.lastRunStatus as ExecutionStatus}
+            />
+            <span>{workflow.lastRunStatus}</span>
+            <span>{formattedStartedAt}</span>
+            <ChevronRightIcon
+              size={14}
+              className="-translate-x-[2px] group-hover:translate-x-0 transition"
+            />
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
