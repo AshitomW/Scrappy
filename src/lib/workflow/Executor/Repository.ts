@@ -12,6 +12,8 @@ import { ExtractDataWithAITask } from "../tasks/Extract_Data_With_AI";
 import { ExtractDataWithAIExecutor } from "./ExtractWithAiExecutor";
 import { ReadPropertyFromJsonExecutor } from "./ReadFromJsonExecutor";
 import { AddPropertyToJsonExecutor } from "./AddPropertyToJson";
+import { NavigateToUrlTask } from "../tasks/navigate_to_url";
+import { NavigateToUrlExecutor } from "./NavigeToUrlExecutor";
 
 type ExecutorFunction<T extends WorkflowTask> = (
   environment: ExecutionEnvironment<T>
@@ -32,4 +34,5 @@ export const ExecutorRepository: RepositoryType = {
   EXTRACT_DATA_WITH_AI: ExtractDataWithAIExecutor,
   READ_PROPERTY_FROM_JSON: ReadPropertyFromJsonExecutor,
   ADD_PROPERTY_TO_JSON: AddPropertyToJsonExecutor,
+  NAVIGATE_TO_URL: NavigateToUrlExecutor,
 };
