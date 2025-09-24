@@ -7,3 +7,8 @@ export function CalculateWorkflowCost(nodes: FlowNode[]) {
     0
   );
 }
+
+export function parseGeminiResponse(response: string) {
+  const cleaned = response.replace(/^```json\s*|\s*```$/g, "");
+  return cleaned;
+}

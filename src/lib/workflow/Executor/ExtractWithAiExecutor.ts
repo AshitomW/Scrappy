@@ -5,6 +5,7 @@ import { ExtractDataWithAITask } from "../tasks/Extract_Data_With_AI";
 import { prisma } from "@/lib/prisma";
 import { symmetricDecrypt } from "@/lib/encryption";
 import { OpenAI } from "openai";
+import { parseGeminiResponse } from "../helpers";
 export async function ExtractDataWithAIExecutor(
   environment: ExecutionEnvironment<typeof ExtractDataWithAITask>
 ): Promise<boolean> {
@@ -70,12 +71,14 @@ export async function ExtractDataWithAIExecutor(
       `Completion Tokens : ${response.usage?.completion_tokens}`
     );
 
-    const result = response.choices[0].message?.content;
-    console.log("@@RESULT: ", result);
+    let result = response.choices[0].message?.content;
+
     if (!result) {
       environment.log.error("empty response from ai");
       return false;
     }
+
+    result = parseGeminiResponse(result);
 
     environment.setOutput("Extracted Data", result);
 
