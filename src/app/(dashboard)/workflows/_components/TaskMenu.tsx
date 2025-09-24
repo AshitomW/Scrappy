@@ -6,9 +6,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TaskRepository } from "@/lib/workflow/tasks/Repository";
 import { TaskType } from "@/types/tasks";
+import { CoinsIcon } from "lucide-react";
 
 export default function TaskMenu() {
   return (
@@ -93,6 +95,10 @@ function TaskMenuBtn({ taskType }: { taskType: TaskType }) {
         <task.icon size={20} />
         {task.label}
       </div>
+      <Badge className="gap-2 flex items-center" variant="outline">
+        <CoinsIcon size={16} />
+        <span>{task.credits}</span>
+      </Badge>
     </Button>
   );
 }
