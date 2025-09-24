@@ -4,6 +4,7 @@ import { ClickElementTask } from "../tasks/click_element";
 import { ExtractDataWithAITask } from "../tasks/Extract_Data_With_AI";
 import { prisma } from "@/lib/prisma";
 import { symmetricDecrypt } from "@/lib/encryption";
+import { GoogleGenAI } from "@google/genai";
 export async function ExtractDataWithAIExecutor(
   environment: ExecutionEnvironment<typeof ExtractDataWithAITask>
 ): Promise<boolean> {
@@ -38,6 +39,12 @@ export async function ExtractDataWithAIExecutor(
       environment.log.error("could not decrypt credentials");
       return false;
     }
+
+    const ai = new GoogleGenAI({ apiKey: plainCredentials });
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
 
     return true;
   } catch (error: any) {
