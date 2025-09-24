@@ -17,8 +17,8 @@ export const routes = [
     icon: Layers2Icon,
   },
   {
-    href: "keys",
-    label: "Keys",
+    href: "credentials",
+    label: "Credentials",
     icon: ShieldIcon,
   },
   {

@@ -27,6 +27,7 @@ export default function BreadCrumbHeader() {
                     {path === "" ? "home" : path}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
+                {index !== paths.length - 1 && <BreadcrumbSeparator />}
               </React.Fragment>
             );
           })}
