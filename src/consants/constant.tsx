@@ -7,22 +7,22 @@ import {
 
 export const routes = [
   {
-    href: "",
+    href: "/",
     label: "Home",
     icon: HomeIcon,
   },
   {
-    href: "workflows",
+    href: "/workflows",
     label: "Workflows",
     icon: Layers2Icon,
   },
   {
-    href: "credentials",
+    href: "/credentials",
     label: "Credentials",
     icon: ShieldIcon,
   },
   {
-    href: "billing",
+    href: "/billing",
     label: "Billing",
     icon: LucideCircleDollarSign,
   },

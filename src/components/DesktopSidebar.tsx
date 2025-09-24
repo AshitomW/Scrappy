@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { act } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
@@ -10,10 +10,10 @@ import { UserAvailableCreditsBadge } from "./UserAvailableCreditsBadge";
 
 export default function DesktopSidebar() {
   const pathname = usePathname();
+
   const activeRoute =
-    routes.find(
-      (route) => route.href.length > 0 && pathname.includes(route.href)
-    ) || routes[0];
+    routes.find((route) => route.href.length > 0 && pathname === route.href) ||
+    routes[0];
 
   return (
     <div className="hidden relative md:block min-w-[280px] max-w-[280px] h-screen overflow-hidden bg-primary/5 dark:bg-secondary/30 dark:text-foreground text-muted-foreground border-r-1 border-seperate">
