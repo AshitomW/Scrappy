@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { init } from "next/dist/compiled/webpack/webpack";
+import "server-only";
 
 const ALGORITHM = "aes-256-cbc";
 
