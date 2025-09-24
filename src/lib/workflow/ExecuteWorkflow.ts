@@ -185,6 +185,10 @@ async function FinalizePhase(
     ? ExecutionPhaseStatus.Completed
     : ExecutionPhaseStatus.Failed;
 
+  logCollector.getAll().map((log) => {
+    console.log("Log message : ", log.message);
+  });
+
   await prisma.executionPhase.update({
     where: { id: phaseId },
     data: {
@@ -195,7 +199,7 @@ async function FinalizePhase(
       logs: {
         createMany: {
           data: logCollector.getAll().map((log) => ({
-            message: log.message,
+            message: log.message.toString(),
             timestamp: log.timestamp,
             logLevel: log.level,
           })),
