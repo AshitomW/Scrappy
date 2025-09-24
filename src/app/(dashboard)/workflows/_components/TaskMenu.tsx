@@ -16,7 +16,13 @@ export default function TaskMenu() {
       <Accordion
         type="multiple"
         className="w-full  border-b-1"
-        defaultValue={["extraction", "interactions", "timing", "results"]}
+        defaultValue={[
+          "extraction",
+          "interactions",
+          "timing",
+          "results",
+          "storage",
+        ]}
       >
         <AccordionItem value="extraction">
           <AccordionTrigger className="font-bold">
@@ -51,6 +57,14 @@ export default function TaskMenu() {
           </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-1">
             <TaskMenuBtn taskType={TaskType.DELIVER_VIA_WEBHOOK} />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="storage">
+          <AccordionTrigger className="font-bold">
+            Data Storage
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-1">
+            <TaskMenuBtn taskType={TaskType.READ_PROPERTY_FROM_JSON} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

@@ -8,6 +8,7 @@ import { ClickElementTask } from "./click_element";
 import { WaitForElementTask } from "./wait_for_element";
 import { DeliverViaWebhookTask } from "./deliver_via_webhook";
 import { ExtractDataWithAITask } from "./Extract_Data_With_AI";
+import { ReadPropertyFromJsonTask } from "./read_property_from_json";
 
 type Repository = {
   [K in TaskType]: WorkflowTask & { type: K };
@@ -22,4 +23,5 @@ export const TaskRepository: Repository = {
   WAIT_FOR_ELEMENT: WaitForElementTask,
   DELIVER_VIA_WEBHOOK: DeliverViaWebhookTask,
   EXTRACT_DATA_WITH_AI: ExtractDataWithAITask,
+  READ_PROPERTY_FROM_JSON: ReadPropertyFromJsonTask,
 };
