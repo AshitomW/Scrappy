@@ -6,6 +6,7 @@ import { WorkflowTask } from "@/types/workflow";
 import { FillInputTask } from "./fill_input";
 import { ClickElementTask } from "./click_element";
 import { WaitForElementTask } from "./wait_for_element";
+import { DeliverViaWebhookTask } from "./deliver_via_webhook";
 
 type Repository = {
   [K in TaskType]: WorkflowTask & { type: K };
@@ -18,4 +19,5 @@ export const TaskRepository: Repository = {
   FILL_INPUT: FillInputTask,
   CLICK_ELEMENT: ClickElementTask,
   WAIT_FOR_ELEMENT: WaitForElementTask,
+  DELIVER_VIA_WEBHOOK: DeliverViaWebhookTask,
 };
