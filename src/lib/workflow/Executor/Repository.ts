@@ -14,6 +14,7 @@ import { ReadPropertyFromJsonExecutor } from "./ReadFromJsonExecutor";
 import { AddPropertyToJsonExecutor } from "./AddPropertyToJson";
 import { NavigateToUrlTask } from "../tasks/navigate_to_url";
 import { NavigateToUrlExecutor } from "./NavigeToUrlExecutor";
+import { ScrollToElementExecutor } from "./ScrollToElementExecutor";
 
 type ExecutorFunction<T extends WorkflowTask> = (
   environment: ExecutionEnvironment<T>
@@ -35,4 +36,5 @@ export const ExecutorRepository: RepositoryType = {
   READ_PROPERTY_FROM_JSON: ReadPropertyFromJsonExecutor,
   ADD_PROPERTY_TO_JSON: AddPropertyToJsonExecutor,
   NAVIGATE_TO_URL: NavigateToUrlExecutor,
+  SCROLL_TO_ELEMENT: ScrollToElementExecutor,
 };
