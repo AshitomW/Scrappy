@@ -11,6 +11,7 @@ import { DeliverViaWebhookExecutor } from "./DeliverViaWebhookExecutor";
 import { ExtractDataWithAITask } from "../tasks/Extract_Data_With_AI";
 import { ExtractDataWithAIExecutor } from "./ExtractWithAiExecutor";
 import { ReadPropertyFromJsonExecutor } from "./ReadFromJsonExecutor";
+import { AddPropertyToJsonExecutor } from "./AddPropertyToJson";
 
 type ExecutorFunction<T extends WorkflowTask> = (
   environment: ExecutionEnvironment<T>
@@ -30,4 +31,5 @@ export const ExecutorRepository: RepositoryType = {
   DELIVER_VIA_WEBHOOK: DeliverViaWebhookExecutor,
   EXTRACT_DATA_WITH_AI: ExtractDataWithAIExecutor,
   READ_PROPERTY_FROM_JSON: ReadPropertyFromJsonExecutor,
+  ADD_PROPERTY_TO_JSON: AddPropertyToJsonExecutor,
 };
