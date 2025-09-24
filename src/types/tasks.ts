@@ -6,12 +6,14 @@ export enum TaskType {
   CLICK_ELEMENT = "CLICK_ELEMENT",
   WAIT_FOR_ELEMENT = "WAIT_FOR_ELEMENT",
   DELIVER_VIA_WEBHOOK = "DELIVER_VIA_WEBHOOK",
+  EXTRACT_DATA_WITH_AI = "EXTRACT_DATA_WITH_AI",
 }
 
 export enum TaskParameterType {
   String = "string",
   Browser_Instance = "Browser_Instance",
   Select = "Select",
+  Credential = "Credential",
 }
 
 export interface TaskParameter {
@@ -19,6 +21,7 @@ export interface TaskParameter {
   type: TaskParameterType;
   helperText?: string;
   required?: boolean;
+  variant?: string;
   hideHandle?: boolean;
   [key: string]: any;
 }

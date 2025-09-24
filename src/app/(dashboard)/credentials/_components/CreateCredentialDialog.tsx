@@ -49,6 +49,7 @@ export default function CreateCredentialDialog({ triggerText }: Props) {
     mutationFn: CreateCredential,
     onSuccess: () => {
       toast.success("Credential created", { id: "create-credential" });
+      setOpen((prev) => !prev);
     },
     onError: (err) => {
       console.error(err);
@@ -58,7 +59,7 @@ export default function CreateCredentialDialog({ triggerText }: Props) {
 
   const onSubmit = useCallback(
     (values: createCredentialSchemaType) => {
-      toast.loading("Creating Credential....", { id: "create-workflow" });
+      toast.loading("Creating Credential....", { id: "create-credential" });
       mutate(values);
     },
     [mutate]

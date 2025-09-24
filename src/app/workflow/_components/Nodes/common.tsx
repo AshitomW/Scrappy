@@ -4,4 +4,5 @@ export const HandleColor: Record<TaskParameterType, string> = {
   [TaskParameterType.Browser_Instance]: "!bg-sky-400",
   [TaskParameterType.String]: "!bg-amber-400 ",
   [TaskParameterType.Select]: "!bg-rose-400",
+  [TaskParameterType.Credential]: "!bg-teal-400",
 };

@@ -7,6 +7,7 @@ import { FlowNode } from "@/types/appnode";
 import { useCallback } from "react";
 import BrowserInstanceParameter from "./parameters/BrowserInstanceParameter";
 import SelectParameter from "./parameters/SelectParameter";
+import CredentialParameter from "./parameters/CredentialParameter";
 
 export default function NodeParameterField({
   parameter,
@@ -61,6 +62,15 @@ export default function NodeParameterField({
         />
       );
 
+    case TaskParameterType.Credential:
+      return (
+        <CredentialParameter
+          parameter={parameter}
+          value={value}
+          updateNodeParameterValue={updateNodeParameterValue}
+          disabled={disabled}
+        />
+      );
     default:
       return (
         <div className="w-full">
