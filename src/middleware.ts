@@ -4,6 +4,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/workflows/(.*)*",
+  "/api/webhooks/stripe",
 ]);
 
 // Protect all routes except the authentication pages.
