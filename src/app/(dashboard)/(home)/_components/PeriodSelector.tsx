@@ -4,6 +4,7 @@ import { Period } from "@/types/analytics";
 
 interface Props {
   periods: Period[];
+  selectedPeriod: Period;
 }
 
 import {
@@ -30,13 +31,14 @@ const MONTH_NAMES = [
   "December",
 ] as const;
 
-export default function PeriodSelector({ periods }: Props) {
+export default function PeriodSelector({ periods, selectedPeriod }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   return (
     <Select
+      value={`${selectedPeriod.year}-${selectedPeriod.month}`}
       onValueChange={(value) => {
-        const [month, year] = value.split("-");
+        const [year, month] = value.split("-");
         const params = new URLSearchParams(searchParams);
         params.set("month", month);
         params.set("year", year);
