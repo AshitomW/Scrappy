@@ -49,5 +49,10 @@ export default async function GetWorkflowExecutionStats(period: Period) {
     }
   });
 
-  return stats;
+  const result = Object.entries(stats).map(([date, infos]) => ({
+    date,
+    ...infos,
+  }));
+
+  return result;
 }
