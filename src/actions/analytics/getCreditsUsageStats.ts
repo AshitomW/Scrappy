@@ -11,22 +11,17 @@ type Stats = {
   success: number;
   failed: number;
 };
-const { Completed, Failed } = ExecutionPhaseStatus;
-
-export default async function GetWorkflowExecutionStats(period: Period) {
+export default async function GetCreditsUsageStats(period: Period) {
   const { userId } = await auth();
   if (!userId) throw new Error("Forbidden: unauthenticated");
 
   const dateRange = PeriodToDateRange(period);
-  const executions = await prisma.workflowExecution.findMany({
+  const executionPhases = await prisma.executionPhase.findMany({
     where: {
       userId,
       startedAt: {
         gte: dateRange.startDate,
         lte: dateRange.endDate,
-      },
-      status: {
-        in: [Completed, Failed],
       },
     },
   });
@@ -45,12 +40,12 @@ export default async function GetWorkflowExecutionStats(period: Period) {
       return acc;
     }, {} as any);
 
-  executions.forEach((execution) => {
-    const date = format(execution.startedAt!, dateFormat);
-    if (execution.status === Completed) {
-      stats[date].success += 1;
-    } else if (execution.status === Failed) {
-      stats[date].failed += 1;
+  executionPhases.forEach((phase) => {
+    const date = format(phase.startedAt!, dateFormat);
+    if (phase.status === ExecutionPhaseStatus.Completed) {
+      stats[date].success += phase.creditsConsumed || 0;
+    } else if (phase.status === ExecutionPhaseStatus.Failed) {
+      stats[date].failed += phase.creditsConsumed || 0;
     }
   });
 
