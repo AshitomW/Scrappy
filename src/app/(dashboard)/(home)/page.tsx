@@ -96,5 +96,11 @@ async function CreditUsageStats({
   selectedPeriod: Period;
 }) {
   const data = await GetCreditsUsageStats(selectedPeriod);
-  return <CreditsUsageChart data={data} />;
+  return (
+    <CreditsUsageChart
+      data={data}
+      title={"Daily Credits Spent"}
+      description=" Daily credits consumed in selected period"
+    />
+  );
 }

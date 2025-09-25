@@ -34,17 +34,23 @@ const chartConfig = {
   },
 };
 
-export default function CreditsUsageChart({ data }: { data: ChartData }) {
+export default function CreditsUsageChart({
+  data,
+  title,
+  description,
+}: {
+  data: ChartData;
+  title: string;
+  description: string;
+}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl font-bold flex items-center gap-2">
           <ChartColumnStackedIcon className="w-6 h-6 text-primary" />
-          Daily Credits Spent
+          {title}
         </CardTitle>
-        <CardDescription>
-          Daily credits consumed in selected period
-        </CardDescription>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer className="max-h-[200px] w-full" config={chartConfig}>
