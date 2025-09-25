@@ -1,7 +1,6 @@
 "use client";
 
 import GetCreditsUsageStats from "@/actions/analytics/getCreditsUsageStats";
-import GetWorkflowExecutionStats from "@/actions/analytics/getWorkflowExecutionStats";
 
 import {
   Card,

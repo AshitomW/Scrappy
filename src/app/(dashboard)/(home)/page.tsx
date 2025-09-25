@@ -12,7 +12,7 @@ import StatisticsCard, {
 import GetWorkflowExecutionStats from "@/actions/analytics/getWorkflowExecutionStats";
 import ExecutionStatusChart from "./_components/ExecutionStatusChart";
 import GetCreditsUsageStats from "@/actions/analytics/getCreditsUsageStats";
-import CreditsUsageChart from "./billing/_components/CreditUsageChart";
+import CreditsUsageChart from "@/app/(dashboard)/billing/_components/CreditUsageChart";
 
 export default async function page({
   searchParams,
