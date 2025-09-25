@@ -4,6 +4,11 @@ import PeriodSelector from "./_components/PeriodSelector";
 import { Period } from "@/types/analytics";
 import { Skeleton } from "@/components/ui/skeleton";
 import { waitFor } from "@/lib/helpers/waitFor";
+import { GetStatistics } from "@/actions/analytics/getStatistics";
+import { CirclePlayIcon, CoinsIcon, WaypointsIcon } from "lucide-react";
+import StatisticsCard, {
+  StatisticsCardSkeleton,
+} from "./_components/StatisticsCard";
 
 export default async function page({
   searchParams,
@@ -25,6 +30,11 @@ export default async function page({
           <PeriodSelectorWrapper selectedPeriod={period} />
         </Suspense>
       </div>
+      <div className="h-full py-6 flex flex-col gap-4">
+        <Suspense fallback={<StatisticsCardSkeleton />}>
+          <StatisticsCards selectedPeriod={period} />
+        </Suspense>
+      </div>
     </div>
   );
 }
@@ -36,4 +46,27 @@ async function PeriodSelectorWrapper({
 }) {
   const periods = await GetPeriods();
   return <PeriodSelector periods={periods} selectedPeriod={selectedPeriod} />;
+}
+
+async function StatisticsCards({ selectedPeriod }: { selectedPeriod: Period }) {
+  const data = await GetStatistics(selectedPeriod);
+  return (
+    <div className="grid gap-3 lg:gap-8 lg:grid-cols-3 min-h-[120px]">
+      <StatisticsCard
+        title="Workflow Executions"
+        value={data.workflowExeuctions}
+        icon={CirclePlayIcon}
+      />
+      <StatisticsCard
+        title="Phase Executions"
+        value={data.phaseExecutions}
+        icon={WaypointsIcon}
+      />
+      <StatisticsCard
+        title="Credits Consumed"
+        value={data.creditsConsumed}
+        icon={CoinsIcon}
+      />
+    </div>
+  );
 }
