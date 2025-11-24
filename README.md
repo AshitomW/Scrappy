@@ -247,10 +247,6 @@ Each task type has an associated credit cost:
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🙏 Acknowledgments
 
 - [React Flow](https://reactflow.dev/) for the visual workflow editor
@@ -258,14 +254,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Stripe](https://stripe.com/) for payment processing
 - [Prisma](https://prisma.io/) for database management
 - [Tailwind CSS](https://tailwindcss.com/) for styling
-
-## 📞 Support
-
-For support, questions, or feature requests:
-
-- Create an issue in this repository
-- Contact the development team
-
----
 
 Built with ❤️ using Next.js and modern web technologies.
