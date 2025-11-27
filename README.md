@@ -239,20 +239,3 @@ Each task type has an associated credit cost:
 2. Set up webhook endpoints for payment processing
 3. Update price IDs in environment variables
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-## 🙏 Acknowledgments
-
-- [React Flow](https://reactflow.dev/) for the visual workflow editor
-- [Clerk](https://clerk.dev/) for authentication
-- [Stripe](https://stripe.com/) for payment processing
-- [Prisma](https://prisma.io/) for database management
-- [Tailwind CSS](https://tailwindcss.com/) for styling
-
-Built with ❤️ using Next.js and modern web technologies.
